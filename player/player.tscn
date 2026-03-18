@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dfnvdcqkio0fe"]
+
+[ext_resource type="Texture2D" uid="uid://drwwmupaj2lyr" path="res://player/householder.jpg" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://dj3816n7wsl56" path="res://player/player.gd" id="1_rkbax"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_onrkg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_oul6g")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
+size = Vector2(79, 178)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=103378180]
+script = ExtResource("1_rkbax")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1379790045]
+scale = Vector2(0.27464786, 1)
+sprite_frames = SubResource("SpriteFrames_onrkg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=4017699]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_i3pqv")
