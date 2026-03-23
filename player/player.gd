@@ -10,7 +10,7 @@ enum airbornstate{grounded, falling}
 
 var current : state = state.idle
 var aircurrent: airbornstate = airbornstate.falling
-var dashtimer := 40.0
+var dashtimer := 20.0
 var dtb:= dashtimer
 var airdash := true
 
@@ -32,26 +32,28 @@ func _physics_process(delta: float) -> void:
 	
 	
 	var direction := Input.get_axis("moveleft","moveright")
-	
 	match current:
 		state.moving:
-			print("move")
+			
 			velocity.x = direction * SPEED
-			if prevdir != 0:
+			if direction != 0.0:
 				prevdir = direction
 		state.dashing:
 			#print("dash")
-			velocity.x = prevdir * SPEED * 4
+			velocity.x = prevdir * SPEED *5
 			dashtimer -= delta* 100
-			#print(dashtimer)
-			print(prevdir)
+				
+			print(dashtimer)
 			velocity.y = 0
 			if dashtimer > dtb/20:
 				if Input.is_action_just_pressed("swing"):
 					current = state.dashattacking
 			if dashtimer <= 0:
+				print(aircurrent)
 				if aircurrent == airbornstate.falling:
+					velocity.x = clampf(velocity.x,-SPEED/1.2,SPEED/1.2)
 					current = state.falling
+					
 				else:
 					current= state.idle
 				dashtimer = dtb
@@ -70,14 +72,13 @@ func _physics_process(delta: float) -> void:
 			if momentconserv(accel):
 				velocity.x += accel
 			
-			if direction != 0:
+			if direction != 0.0:
 				prevdir = direction
 			if is_on_floor():
 				current = state.idle
 		_:
 			#print("idle/default")
 			dashtimer = dtb
-			SPEED= 300.0
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 		
@@ -89,11 +90,14 @@ func _physics_process(delta: float) -> void:
 					current = state.moving
 			if Input.is_action_just_pressed("dash"):
 				current = state.dashing
+				velocity.y = 0
 			
 			
 			if Input.is_action_just_pressed("jump"):
+				
 				current = state.jumping
 				aircurrent = airbornstate.falling
+				dashtimer = dtb
 				
 			if Input.is_action_pressed("movementkeys") == false:
 				
@@ -105,10 +109,8 @@ func _physics_process(delta: float) -> void:
 				if airdash:
 					current = state.dashing
 					airdash= !airdash
-			if dashtimer != dtb && Input.is_action_pressed("movementkeys") == false:
+			if dashtimer == dtb && Input.is_action_pressed("movementkeys") == false:
 				current = state.falling
-	
-	
 	
 	
 	

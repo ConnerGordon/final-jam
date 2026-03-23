@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://1ssjywk2tygk"]
 
+[ext_resource type="Script" uid="uid://bfbfntngwqypj" path="res://folder base/mainscene.gd" id="1_8yg2a"]
 [ext_resource type="Texture2D" uid="uid://sd5wmwxaju4s" path="res://newimports/output-onlinetools (3).png" id="1_tm4rf"]
 [ext_resource type="PackedScene" uid="uid://dfnvdcqkio0fe" path="res://player/player.tscn" id="2_xwcau"]
+[ext_resource type="PackedScene" uid="uid://bfa4do156wj2s" path="res://folder base/basehall1.tscn" id="3_kgh7c"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xwcau"]
 
@@ -14,6 +16,7 @@ size = Vector2(5346, 55.5)
 gradient = SubResource("Gradient_xwcau")
 
 [node name="main" type="Node2D" unique_id=48686554]
+script = ExtResource("1_8yg2a")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1361564345]
 offset_left = -5.0
@@ -36,4 +39,6 @@ scale = Vector2(83.59374, 1.109375)
 texture = SubResource("GradientTexture2D_kgh7c")
 
 [node name="CharacterBody2D" parent="." unique_id=103378180 instance=ExtResource("2_xwcau")]
-position = Vector2(364, 68)
+position = Vector2(136, -109)
+
+[node name="gridmap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
