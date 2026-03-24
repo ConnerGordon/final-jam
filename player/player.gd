@@ -1,8 +1,22 @@
 extends CharacterBody2D
 
 
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var groundedswordbox: Area2D = $groundedswordbox
+
+
+
+
+
+
+
+
+
+
+
 var SPEED = 400.0
 const JUMP_VELOCITY = -400.0
+
 
 enum state {idle,moving,attacking,dashing,dashattacking, jumping, airattacking,falling}
 
@@ -34,19 +48,27 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("moveleft","moveright")
 	match current:
 		state.moving:
-			
+			if direction == -1:
+				animated_sprite_2d.flip_h = 1
+			elif direction == 1:
+				animated_sprite_2d.flip_h = 0
 			velocity.x = direction * SPEED
 			if direction != 0.0:
 				prevdir = direction
 		state.dashing:
 			#print("dash")
+			if prevdir == -1:
+				animated_sprite_2d.flip_h = 1
+			elif prevdir == 1:
+				animated_sprite_2d.flip_h = 0
+			
 			velocity.x = prevdir * SPEED *5
 			dashtimer -= delta* 100
 				
 			print(dashtimer)
 			velocity.y = 0
 			if dashtimer > dtb/20:
-				if Input.is_action_just_pressed("swing"):
+				if Input.is_action_just_pressed("swing") && aircurrent == airbornstate.grounded:
 					current = state.dashattacking
 			if dashtimer <= 0:
 				print(aircurrent)
@@ -65,7 +87,14 @@ func _physics_process(delta: float) -> void:
 			if velocity.y < 0:
 				current = state.falling
 		state.dashattacking:
-			current = state.idle
+			groundedswordbox.monitoring = true
+			
+			if dashtimer <= 0:
+				groundedswordbox.monitoring = false
+				print(aircurrent)
+				if aircurrent == airbornstate.falling:
+					velocity.x = clampf(velocity.x,-SPEED/1.2,SPEED/1.2)
+					current = state.falling
 		state.falling:
 			#print("falling")
 			var accel = direction * SPEED * delta*10
