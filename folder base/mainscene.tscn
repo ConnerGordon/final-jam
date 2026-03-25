@@ -42,3 +42,6 @@ texture = SubResource("GradientTexture2D_kgh7c")
 position = Vector2(136, -109)
 
 [node name="gridmap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
+
+[node name="nextmappoint" type="Marker2D" parent="." unique_id=781514354]
+position = Vector2(3040, 0)

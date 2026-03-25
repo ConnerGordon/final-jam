@@ -15,7 +15,8 @@ extends CharacterBody2D
 
 
 var SPEED = 400.0
-const JUMP_VELOCITY = -400.0
+var jumpdefault=1000.0
+var JUMP_VELOCITY = jumpdefault
 
 
 enum state {idle,moving,attacking,dashing,dashattacking, jumping, airattacking,falling}
@@ -71,7 +72,6 @@ func _physics_process(delta: float) -> void:
 				if Input.is_action_just_pressed("swing") && aircurrent == airbornstate.grounded:
 					current = state.dashattacking
 			if dashtimer <= 0:
-				print(aircurrent)
 				if aircurrent == airbornstate.falling:
 					velocity.x = clampf(velocity.x,-SPEED/1.2,SPEED/1.2)
 					current = state.falling
@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 			#print("jump")
 			aircurrent = airbornstate.falling
 			if is_on_floor():
-				velocity.y -= 500
+				velocity.y -= JUMP_VELOCITY
 			if velocity.y < 0:
 				current = state.falling
 		state.dashattacking:
@@ -124,9 +124,17 @@ func _physics_process(delta: float) -> void:
 			
 			if Input.is_action_just_pressed("jump"):
 				
+				
+				
+				if current == state.dashing:
+					JUMP_VELOCITY = JUMP_VELOCITY/3
+				else: 
+					JUMP_VELOCITY = jumpdefault
 				current = state.jumping
 				aircurrent = airbornstate.falling
 				dashtimer = dtb
+				
+				
 				
 			if Input.is_action_pressed("movementkeys") == false:
 				
