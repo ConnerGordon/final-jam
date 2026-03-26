@@ -15,7 +15,7 @@ extends CharacterBody2D
 
 
 var SPEED = 400.0
-var jumpdefault=1000.0
+var jumpdefault=600.0
 var JUMP_VELOCITY = jumpdefault
 
 
@@ -34,11 +34,30 @@ var airdash := true
 var prevdir := 1.0
 
 
+signal nextgen()
+
+var grav = 9.8
+
 
 func _physics_process(delta: float) -> void:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		if Input.is_action_pressed("jump"):
+			grav = 980/2.5
+		else:
+			grav = 980
+		velocity += Vector2(0,grav) * delta
 		aircurrent = airbornstate.falling
 	if is_on_floor():
 		airdash = true
@@ -66,12 +85,12 @@ func _physics_process(delta: float) -> void:
 			velocity.x = prevdir * SPEED *5
 			dashtimer -= delta* 100
 				
-			print(dashtimer)
+			
 			velocity.y = 0
 			if dashtimer > dtb/20:
 				if Input.is_action_just_pressed("swing") && aircurrent == airbornstate.grounded:
 					current = state.dashattacking
-			if dashtimer <= 0:
+			if dashtimer <= 0 || velocity.x == 0:
 				if aircurrent == airbornstate.falling:
 					velocity.x = clampf(velocity.x,-SPEED/1.2,SPEED/1.2)
 					current = state.falling
@@ -155,6 +174,14 @@ func _physics_process(delta: float) -> void:
 	##print("playerint state: 	"+ str(current))
 	##print("airborne:	 " +str(aircurrent))
 	move_and_slide()
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 
@@ -162,6 +189,29 @@ func momentconserv(acc: float)-> bool:
 	##print("vel:" + str(velocity.x))
 	##print("acc:" + str(acc))
 	##print(SPEED/1.5)
-	if abs(velocity.x + acc) < SPEED/1.5 || abs(velocity.x + acc) < abs(velocity.x):
+	if abs(velocity.x + acc) < SPEED || abs(velocity.x + acc) < abs(velocity.x):
 		return true
 	return false
+
+
+@onready var bodydetec: Area2D = $bodydetec
+
+
+
+
+
+
+
+
+func _on_bodydetec_body_entered(body: Node2D) -> void:
+	print(body)
+	if body is TileMapLayer:
+		
+		var temphold = body.get_used_cells_by_id(0,Vector2i(4,3))
+		print(temphold[0])
+		
+		
+		for i in temphold:
+			
+			body.set_cell(i,-1,Vector2i(-1,-1),-1)
+		nextgen.emit()
