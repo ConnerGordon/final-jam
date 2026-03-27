@@ -19,21 +19,42 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
-size = Vector2(156, 178)
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkbax"]
 radius = 40.0
 height = 128.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
+size = Vector2(156, 178)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=103378180]
 collision_mask = 4
 script = ExtResource("1_rkbax")
 
+[node name="wallright" type="RayCast2D" parent="." unique_id=173322833]
+scale = Vector2(1, 20)
+target_position = Vector2(56, 0)
+collision_mask = 4
+
+[node name="wallleft" type="RayCast2D" parent="." unique_id=914232191]
+scale = Vector2(1, 20)
+target_position = Vector2(-56, 0)
+collision_mask = 4
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1379790045]
 position = Vector2(0, -0.5000019)
 scale = Vector2(0.27464786, 0.50282484)
 sprite_frames = SubResource("SpriteFrames_onrkg")
+
+[node name="groundedswordbox" type="Area2D" parent="AnimatedSprite2D" unique_id=1738176100]
+position = Vector2(0, 0.9943858)
+scale = Vector2(3.6410258, 1.9887639)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/groundedswordbox" unique_id=925681849]
+position = Vector2(95, 3)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_rkbax")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=4017699]
 scale = Vector2(0.5, 0.5)
@@ -41,15 +62,6 @@ shape = SubResource("RectangleShape2D_i3pqv")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1901643446]
 zoom = Vector2(0.5, 0.5)
-
-[node name="groundedswordbox" type="Area2D" parent="." unique_id=1738176100]
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="groundedswordbox" unique_id=925681849]
-position = Vector2(95, 3)
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_rkbax")
 
 [node name="bodydetec" type="Area2D" parent="." unique_id=360210077]
 collision_layer = 8

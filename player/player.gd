@@ -2,7 +2,8 @@ extends CharacterBody2D
 
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var groundedswordbox: Area2D = $groundedswordbox
+@onready var groundedswordbox: Area2D = $AnimatedSprite2D/groundedswordbox
+
 
 
 
@@ -15,7 +16,7 @@ extends CharacterBody2D
 
 
 var SPEED = 400.0
-var jumpdefault=600.0
+var jumpdefault=1200.0
 var JUMP_VELOCITY = jumpdefault
 
 
@@ -28,6 +29,16 @@ var aircurrent: airbornstate = airbornstate.falling
 var dashtimer := 20.0
 var dtb:= dashtimer
 var airdash := true
+var coytimedef:= 2.0
+var coyotetimer := coytimedef
+
+
+
+
+
+@onready var wallright: RayCast2D = $wallright
+@onready var wallleft: RayCast2D = $wallleft
+
 
 
 
@@ -53,13 +64,23 @@ func _physics_process(delta: float) -> void:
 	
 	# Add the gravity.
 	if not is_on_floor():
+		coyotetimer -= delta
 		if Input.is_action_pressed("jump"):
-			grav = 980/2.5
+			grav = 980/1.5
+		elif Input.is_action_pressed("FALL"):
+			grav = 980*1.5
 		else:
 			grav = 980
-		velocity += Vector2(0,grav) * delta
+		if velocity.y < 1000 || Input.is_action_pressed("FALL"):
+			velocity.y += grav * delta * 2.5
+		
+		if is_on_wall():
+			if velocity.y > 400:
+				velocity.y = 400
 		aircurrent = airbornstate.falling
 	if is_on_floor():
+		
+		coyotetimer = coytimedef
 		airdash = true
 		aircurrent = airbornstate.grounded 
 	
@@ -87,14 +108,10 @@ func _physics_process(delta: float) -> void:
 				
 			
 			velocity.y = 0
-			if dashtimer > dtb/20:
-				if Input.is_action_just_pressed("swing") && aircurrent == airbornstate.grounded:
-					current = state.dashattacking
 			if dashtimer <= 0 || velocity.x == 0:
 				if aircurrent == airbornstate.falling:
 					velocity.x = clampf(velocity.x,-SPEED/1.2,SPEED/1.2)
 					current = state.falling
-					
 				else:
 					current= state.idle
 				dashtimer = dtb
@@ -102,7 +119,17 @@ func _physics_process(delta: float) -> void:
 			#print("jump")
 			aircurrent = airbornstate.falling
 			if is_on_floor():
-				velocity.y -= JUMP_VELOCITY
+				velocity.y = -JUMP_VELOCITY
+			if is_on_wall_only():
+				airdash = true
+				dashtimer = dtb
+				velocity.y = -JUMP_VELOCITY/1.5
+				if wallright.is_colliding():
+					print("right")
+					velocity.x = -SPEED*2
+				if wallleft.is_colliding():
+					print("left")
+					velocity.x = SPEED*2
 			if velocity.y < 0:
 				current = state.falling
 		state.dashattacking:
@@ -146,7 +173,8 @@ func _physics_process(delta: float) -> void:
 				
 				
 				if current == state.dashing:
-					JUMP_VELOCITY = JUMP_VELOCITY/3
+					if JUMP_VELOCITY > jumpdefault/4:
+						JUMP_VELOCITY = JUMP_VELOCITY/1.5
 				else: 
 					JUMP_VELOCITY = jumpdefault
 				current = state.jumping
@@ -158,13 +186,21 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_pressed("movementkeys") == false:
 				
 				current = state.idle
-				
+			
+			
+			if dashtimer > dtb/20:
+				if Input.is_action_just_pressed("swing") && aircurrent == airbornstate.grounded:
+					current = state.dashattacking
 			
 		airbornstate.falling:
 			if Input.is_action_just_pressed("dash"):
 				if airdash:
 					current = state.dashing
 					airdash= !airdash
+			if Input.is_action_just_pressed("jump") && is_on_wall_only():
+				JUMP_VELOCITY = jumpdefault
+				current = state.jumping
+				
 			if dashtimer == dtb && Input.is_action_pressed("movementkeys") == false:
 				current = state.falling
 	

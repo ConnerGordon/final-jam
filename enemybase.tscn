@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://ct7o68emqlvol"]
+
+[ext_resource type="Script" uid="uid://dy4xqlcvc8q2h" path="res://enemybase.gd" id="1_oro57"]
+[ext_resource type="Texture2D" uid="uid://dpropmabtb244" path="res://icon.svg" id="2_uv2s7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yjk2b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_uv2s7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8p8xu"]
+size = Vector2(127, 126)
+
+[node name="enemybase" type="CharacterBody2D" unique_id=658416861]
+script = ExtResource("1_oro57")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
+avoidance_enabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1112094005]
+sprite_frames = SubResource("SpriteFrames_yjk2b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1876870390]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_8p8xu")
