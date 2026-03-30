@@ -1,5 +1,5 @@
 extends CharacterBody2D
-
+class_name Player
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var groundedswordbox: Area2D = $AnimatedSprite2D/groundedswordbox
@@ -8,7 +8,11 @@ extends CharacterBody2D
 
 
 
-
+var var_health : float :
+	set(new_health):
+		var_health = new_health
+		if var_health <= 0:
+			queue_free()
 
 
 

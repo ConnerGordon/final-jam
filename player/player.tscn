@@ -26,7 +26,7 @@ height = 128.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
 size = Vector2(156, 178)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=103378180]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=103378180 groups=["player"]]
 collision_mask = 4
 script = ExtResource("1_rkbax")
 

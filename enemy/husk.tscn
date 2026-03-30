@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://bhy61r18tgkv"]
+
+[ext_resource type="Script" uid="uid://dja4ix4rd3eo0" path="res://enemy/first_enemy.gd" id="1_0vvse"]
+[ext_resource type="Texture2D" uid="uid://dpropmabtb244" path="res://icon.svg" id="2_wn8j1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yjk2b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_wn8j1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8p8xu"]
+size = Vector2(127, 126)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwalt"]
+size = Vector2(459, 474)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6b5m7"]
+size = Vector2(126, 124)
+
+[node name="enemybase" type="CharacterBody2D" unique_id=658416861]
+script = ExtResource("1_0vvse")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
+avoidance_enabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1112094005]
+sprite_frames = SubResource("SpriteFrames_yjk2b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1876870390]
+shape = SubResource("RectangleShape2D_8p8xu")
+
+[node name="detecbox" type="Area2D" parent="." unique_id=1241152469]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detecbox" unique_id=945585681]
+position = Vector2(0.5, 1)
+shape = SubResource("RectangleShape2D_nwalt")
+
+[node name="hurtbox" type="Area2D" parent="." unique_id=543940087]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1088432644]
+position = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_6b5m7")
+
+[connection signal="target_reached" from="NavigationAgent2D" to="." method="destination_reach"]
+[connection signal="area_entered" from="detecbox" to="." method="detected"]
