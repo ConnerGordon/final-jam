@@ -13,6 +13,8 @@ var var_health : float :
 		if var_health <= 0:
 			queue_free()
 
+@onready var targpos: Line2D = $targpos
+
 
 
 enum state {idle, wandering,finding}
@@ -23,6 +25,7 @@ var found := false
 
 var playerpos
 
+var targetpoint := 0.0
 func _ready() -> void:
 	var_health = 5
 func _physics_process(delta: float) -> void:
@@ -32,7 +35,7 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_on_floor():
 		velocity.y += 9.8 * delta * 2.5
-		print("goingdown")
+		
 	
 	
 	
@@ -59,6 +62,7 @@ func _physics_process(delta: float) -> void:
 					
 				navigation_agent_2d.target_position = safe
 				print(safe)
+				targetpoint = safe
 				
 				if found:
 					cur = state.finding
@@ -82,8 +86,7 @@ func _physics_process(delta: float) -> void:
 			
 			
 			
-			
-			
+	targpos.global_position = targetpoint
 			
 			
 	move_and_slide()
