@@ -277,9 +277,9 @@ navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_syhyd")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_0f0fp"]
-vertices = PackedVector2Array(566.1797, -10, 42, -10, 42, -118, 566.02344, -118)
+vertices = PackedVector2Array(566.1406, -10, 42, -10, 42, -22, 566.0625, -22)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(31.999998, -127.99999, 31.999998, 0, 576.19995, 0, 575.99994, -127.99999)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(31.999998, -31.999998, 31.999998, 0, 576.19995, 0, 575.99994, -31.999998)])
 
 [node name="gridmap" type="TileMapLayer" unique_id=1930176116]
 scale = Vector2(5, 5)

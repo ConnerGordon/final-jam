@@ -25,7 +25,7 @@ var found := false
 
 var playerpos
 
-var targetpoint := 0.0
+var targetpoint := Vector2(0.0,0.0)
 func _ready() -> void:
 	var_health = 5
 func _physics_process(delta: float) -> void:
