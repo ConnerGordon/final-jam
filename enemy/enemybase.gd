@@ -5,7 +5,7 @@ const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 
-
+var navigtimer := 10.0
 
 var var_health : float :
 	set(new_health):
@@ -58,6 +58,13 @@ func _physics_process(delta: float) -> void:
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
 			velocity = direc * SPEED
+			if velocity == Vector2.ZERO:
+				navigtimer -= delta
+				if navigtimer < 0.0:
+					
+					destination_reach()
+					navigtimer = 10.0
+				
 			
 			
 			

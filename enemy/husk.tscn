@@ -29,7 +29,10 @@ collision_mask = 4
 script = ExtResource("1_0vvse")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
-target_desired_distance = 100.05
+path_desired_distance = 105.0
+target_desired_distance = 62.93
+path_max_distance = 110.0
+navigation_layers = 3
 avoidance_enabled = true
 avoidance_layers = 2
 avoidance_mask = 6

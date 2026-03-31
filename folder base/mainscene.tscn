@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dfnvdcqkio0fe" path="res://player/player.tscn" id="2_xwcau"]
 [ext_resource type="PackedScene" uid="uid://bfa4do156wj2s" path="res://folder base/basehall1.tscn" id="3_kgh7c"]
 [ext_resource type="PackedScene" uid="uid://bhy61r18tgkv" path="res://enemy/husk.tscn" id="5_kvtpo"]
+[ext_resource type="PackedScene" uid="uid://5ihu4cisx2o0" path="res://folder base/downpath.tscn" id="6_ktlqv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xwcau"]
 
@@ -40,7 +41,7 @@ scale = Vector2(83.59374, 1.109375)
 texture = SubResource("GradientTexture2D_kgh7c")
 
 [node name="CharacterBody2D" parent="." unique_id=103378180 instance=ExtResource("2_xwcau")]
-position = Vector2(393, -49)
+position = Vector2(-5888, -159)
 
 [node name="gridmap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
 
@@ -48,4 +49,7 @@ position = Vector2(393, -49)
 position = Vector2(3040, 0)
 
 [node name="enemybase" parent="." unique_id=658416861 instance=ExtResource("5_kvtpo")]
-position = Vector2(2669, -135)
+position = Vector2(-7302, -76)
+
+[node name="gridmap2" parent="." unique_id=227575916 instance=ExtResource("6_ktlqv")]
+position = Vector2(-7924, -4391.9995)

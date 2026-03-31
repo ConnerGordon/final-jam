@@ -5,7 +5,7 @@ const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 
-
+var navigtimer := 10.0
 
 var var_health : float :
 	set(new_health):
@@ -75,6 +75,17 @@ func _physics_process(delta: float) -> void:
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
 			velocity.x = direc.x * SPEED
+			if navigation_agent_2d.get_navigation_layer_value(2):
+				velocity.y += 500
+			
+			
+			
+			
+			if velocity == Vector2.ZERO:
+				navigtimer -= delta
+				if navigtimer < 0.0:
+					destination_reach()
+					navigtimer = 10.0
 			
 			
 			
@@ -83,6 +94,11 @@ func _physics_process(delta: float) -> void:
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
 			velocity.x = direc.x * SPEED
+			
+			if velocity == Vector2.ZERO:
+				navigtimer -= delta
+				if navigtimer < 0.0:
+					destination_reach()
 			
 			
 			
@@ -96,7 +112,7 @@ func _physics_process(delta: float) -> void:
 func get_new_target():
 	
 	var offx = randf_range(-2500,2500)
-	var offy = randf_range(-15,15)
+	var offy = randf_range(-1000,-500)
 	
 	if found:
 		return playerpos
