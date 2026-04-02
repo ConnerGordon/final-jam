@@ -58,6 +58,8 @@ func _physics_process(delta: float) -> void:
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
 			velocity = direc * SPEED
+			
+			
 			if velocity == Vector2.ZERO:
 				navigtimer -= delta
 				if navigtimer < 0.0:

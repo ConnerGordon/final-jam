@@ -13,7 +13,7 @@ var var_health : float :
 		if var_health <= 0:
 			queue_free()
 
-@onready var targpos: Line2D = $targpos
+
 
 
 
@@ -34,7 +34,7 @@ func _physics_process(delta: float) -> void:
 	
 	
 	if not is_on_floor():
-		velocity.y += 9.8 * delta * 2.5
+		velocity.y += 9.8 * 2.5
 		
 	
 	
@@ -46,7 +46,7 @@ func _physics_process(delta: float) -> void:
 	
 	match cur:
 		state.idle:
-			velocity = Vector2(0,velocity.x)
+			velocity = Vector2(velocity.x,0)
 			idle_timer -= delta*10
 			if idle_timer <= 0:
 				
@@ -55,13 +55,13 @@ func _physics_process(delta: float) -> void:
 				var nav_map = navigation_agent_2d.get_navigation_map()
 				var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 				
-				while abs(safe.distance_to(global_position)) < 500:
+				while navigation_agent_2d.is_target_reachable() != true:
 					target = get_new_target()
 					nav_map = navigation_agent_2d.get_navigation_map()
 					safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
 				navigation_agent_2d.target_position = safe
-				print(safe)
+				
 				targetpoint = safe
 				
 				if found:
@@ -74,9 +74,16 @@ func _physics_process(delta: float) -> void:
 			var current_pos = global_transform.origin
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
-			velocity.x = direc.x * SPEED
-			if navigation_agent_2d.get_navigation_layer_value(2):
-				velocity.y += 500
+			if is_on_floor():
+				velocity.x = direc.x * SPEED
+			
+			
+			if direc.y <= -.899999 && is_on_floor():
+				velocity.x = direc.x * 10
+				velocity.y = (navigation_agent_2d.get_next_path_position().y)/(9.8) * (9.8 * delta)
+				
+				#print(velocity.y)
+				
 			
 			
 			
@@ -102,7 +109,6 @@ func _physics_process(delta: float) -> void:
 			
 			
 			
-	targpos.global_position = targetpoint
 			
 			
 	move_and_slide()

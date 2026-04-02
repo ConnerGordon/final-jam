@@ -77,6 +77,13 @@ FALL={
 ]
 }
 
+[layer_names]
+
+2d_navigation/layer_1="grounded_area"
+2d_navigation/layer_2="jump_links"
+2d_navigation/layer_3="airspace"
+2d_navigation/layer_4="avoidance"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

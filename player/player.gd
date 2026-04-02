@@ -124,16 +124,22 @@ func _physics_process(delta: float) -> void:
 			aircurrent = airbornstate.falling
 			if is_on_floor():
 				velocity.y = -JUMP_VELOCITY
-			if is_on_wall_only():
+			#if is_on_wall_only():
+				#airdash = true
+				#dashtimer = dtb
+				#velocity.y = -JUMP_VELOCITY/1.5
+			if wallright.is_colliding() && (is_on_floor() == false):
 				airdash = true
 				dashtimer = dtb
 				velocity.y = -JUMP_VELOCITY/1.5
-				if wallright.is_colliding():
-					print("right")
-					velocity.x = -SPEED*2
-				if wallleft.is_colliding():
-					print("left")
-					velocity.x = SPEED*2
+				print("right")
+				velocity.x = -SPEED*2
+			if wallleft.is_colliding() && (is_on_floor() == false):
+				print("left")
+				airdash = true
+				dashtimer = dtb
+				velocity.y = -JUMP_VELOCITY/1.5
+				velocity.x = SPEED*2
 			if velocity.y < 0:
 				current = state.falling
 		state.dashattacking:

@@ -21,14 +21,15 @@ gradient = SubResource("Gradient_xwcau")
 script = ExtResource("1_8yg2a")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1361564345]
-offset_left = -5.0
-offset_right = 1915.0
-offset_bottom = 1080.0
+offset_left = -5792.0
+offset_top = 4853.0
+offset_right = -3872.0
+offset_bottom = 5933.0
 scale = Vector2(0.605, 0.605)
 texture = ExtResource("1_tm4rf")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1610737700]
-position = Vector2(578, 669)
+position = Vector2(-3295, 5514)
 physics_material_override = SubResource("PhysicsMaterial_xwcau")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1528174179]
@@ -41,7 +42,7 @@ scale = Vector2(83.59374, 1.109375)
 texture = SubResource("GradientTexture2D_kgh7c")
 
 [node name="CharacterBody2D" parent="." unique_id=103378180 instance=ExtResource("2_xwcau")]
-position = Vector2(-5888, -159)
+position = Vector2(-6839, -191)
 
 [node name="gridmap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
 
