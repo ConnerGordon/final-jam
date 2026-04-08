@@ -4,6 +4,7 @@ extends CharacterBody2D
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
+@onready var basepos: Marker2D = $basepos
 
 var navigtimer := 10.0
 
@@ -78,11 +79,12 @@ func _physics_process(delta: float) -> void:
 				velocity.x = direc.x * SPEED
 			
 			
-			if direc.y <= -.899999 && is_on_floor():
-				velocity.x = direc.x * 10
-				velocity.y = (navigation_agent_2d.get_next_path_position().y)/(9.8) * (9.8 * delta)
+			var disto = navigation_agent_2d.get_next_path_position().distance_to(basepos.global_position)
+			
+			if direc.y <= -.899999 && is_on_floor() && disto > 500:
+				velocity.y -= abs(sin(disto)*9.8*5/delta)
 				
-				#print(velocity.y)
+				print(disto)
 				
 			
 			
@@ -110,7 +112,10 @@ func _physics_process(delta: float) -> void:
 			
 			
 			
-			
+		
+	print(navigation_agent_2d.distance_to_target())
+	print(navigation_agent_2d.target_position)
+	print(navigation_agent_2d.is_target_reached())
 	move_and_slide()
 	
 

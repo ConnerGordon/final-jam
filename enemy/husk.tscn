@@ -29,6 +29,9 @@ collision_mask = 4
 script = ExtResource("1_0vvse")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
+path_desired_distance = 50.0
+target_desired_distance = 500.0
+path_max_distance = 200.0
 navigation_layers = 3
 avoidance_enabled = true
 avoidance_layers = 16
@@ -45,15 +48,15 @@ shape = SubResource("RectangleShape2D_8p8xu")
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detecbox" unique_id=945585681]
-position = Vector2(0.5, 1)
 shape = SubResource("RectangleShape2D_nwalt")
 
 [node name="hurtbox" type="Area2D" parent="." unique_id=543940087]
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1088432644]
-position = Vector2(-1, -1)
 shape = SubResource("RectangleShape2D_6b5m7")
+
+[node name="basepos" type="Marker2D" parent="." unique_id=1899378542]
 
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="destination_reach"]
 [connection signal="area_entered" from="detecbox" to="." method="detected"]
