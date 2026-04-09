@@ -25,10 +25,18 @@ var idle_timer := 5.0
 var found := false
 
 var playerpos
+var uptime := false
 
-var targetpoint := Vector2(0.0,0.0)
+var start:= Vector2.ZERO
+var end:= Vector2.ZERO
+
 func _ready() -> void:
 	var_health = 5
+	navigation_agent_2d.link_reached.connect(jump)
+
+
+
+
 func _physics_process(delta: float) -> void:
 	
 	
@@ -47,7 +55,11 @@ func _physics_process(delta: float) -> void:
 	
 	match cur:
 		state.idle:
-			velocity = Vector2(velocity.x,0)
+			if is_on_floor():
+				
+				velocity = Vector2(0,0)
+			else:
+				velocity = Vector2(velocity.x,0)
 			idle_timer -= delta*10
 			if idle_timer <= 0:
 				
@@ -57,19 +69,20 @@ func _physics_process(delta: float) -> void:
 				var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 				
 				while navigation_agent_2d.is_target_reachable() != true:
+					print("recal")
 					target = get_new_target()
 					nav_map = navigation_agent_2d.get_navigation_map()
 					safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
 				navigation_agent_2d.target_position = safe
 				
-				targetpoint = safe
+				
 				
 				if found:
 					cur = state.finding
 				else:
 					cur = state.wandering
-				idle_timer =5.0
+				idle_timer = randf_range(2,20)
 		
 		state.wandering:
 			var current_pos = global_transform.origin
@@ -79,19 +92,19 @@ func _physics_process(delta: float) -> void:
 				velocity.x = direc.x * SPEED
 			
 			
-			var disto = navigation_agent_2d.get_next_path_position().distance_to(basepos.global_position)
+			#var disto = navigation_agent_2d.get_next_path_position().distance_to(basepos.global_position)
 			
-			if direc.y <= -.899999 && is_on_floor() && disto > 500:
-				velocity.y -= abs(sin(disto)*9.8*5/delta)
+			if uptime && start.y < end.y:
+				velocity.y -= abs(start.y-end.y*9.8*5/delta)
 				
-				print(disto)
 				
+				
+			print(navigation_agent_2d.get_next_path_position().distance_to(global_position))
 			
 			
-			
-			
-			if velocity == Vector2.ZERO:
-				navigtimer -= delta
+			print(velocity.round())
+			if velocity.round() == Vector2.ZERO:
+				navigtimer -= delta * 10
 				if navigtimer < 0.0:
 					destination_reach()
 					navigtimer = 10.0
@@ -113,17 +126,20 @@ func _physics_process(delta: float) -> void:
 			
 			
 		
-	print(navigation_agent_2d.distance_to_target())
-	print(navigation_agent_2d.target_position)
-	print(navigation_agent_2d.is_target_reached())
+	#print(navigation_agent_2d.distance_to_target())
+	#print(navigation_agent_2d.target_position)
+	#print(navigation_agent_2d.is_target_reached())
+	#print(velocity)
+	
 	move_and_slide()
 	
+	print(cur)
 
 
 func get_new_target():
 	
 	var offx = randf_range(-2500,2500)
-	var offy = randf_range(-1000,-500)
+	var offy = randf_range(-500,500)
 	
 	if found:
 		return playerpos
@@ -137,7 +153,10 @@ func get_new_target():
 	
 	
 
-
+func jump(star:Vector2, en:Vector2):
+	uptime = true
+	start = star
+	end = en
 func set_idle():
 	idle_timer = randf_range(2,20)
 	cur = state.idle
@@ -145,7 +164,7 @@ func set_idle():
 
 
 func destination_reach() -> void:
-	cur = state.idle
+	set_idle()
 
 
 

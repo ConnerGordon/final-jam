@@ -15,27 +15,28 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8p8xu"]
-size = Vector2(127, 126)
+size = Vector2(127, 127)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nwalt"]
 size = Vector2(459, 474)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6b5m7"]
-size = Vector2(126, 124)
+size = Vector2(126, 127)
 
 [node name="enemybase" type="CharacterBody2D" unique_id=658416861]
+top_level = true
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("1_0vvse")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
-path_desired_distance = 50.0
-target_desired_distance = 500.0
-path_max_distance = 200.0
+path_desired_distance = 64.0
+target_desired_distance = 64.0
 navigation_layers = 3
+path_postprocessing = 1
 avoidance_enabled = true
-avoidance_layers = 16
-avoidance_mask = 24
+avoidance_layers = 2
+avoidance_mask = 14
 debug_enabled = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1112094005]

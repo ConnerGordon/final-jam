@@ -24,6 +24,7 @@ size = Vector2(459, 474)
 size = Vector2(126, 124)
 
 [node name="enemybase" type="CharacterBody2D" unique_id=658416861]
+top_level = true
 script = ExtResource("1_nwalt")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]

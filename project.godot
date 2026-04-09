@@ -79,10 +79,19 @@ FALL={
 
 [layer_names]
 
+2d_physics/layer_1="player"
 2d_navigation/layer_1="grounded_area"
+2d_physics/layer_2="enemy"
 2d_navigation/layer_2="jump_links"
+2d_physics/layer_3="world"
 2d_navigation/layer_3="airspace"
+2d_physics/layer_4="spec"
 2d_navigation/layer_4="avoidance"
+avoidance/layer_1="player"
+avoidance/layer_2="enemy"
+avoidance/layer_3="world"
+avoidance/layer_4="trap?"
+avoidance/layer_5="spec"
 
 [physics]
 
