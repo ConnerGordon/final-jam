@@ -4,7 +4,7 @@ extends CharacterBody2D
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
-@onready var basepos: Marker2D = $basepos
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 var navigtimer := 10.0
 
@@ -67,14 +67,13 @@ func _physics_process(delta: float) -> void:
 				var target = get_new_target()
 				var nav_map = navigation_agent_2d.get_navigation_map()
 				var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
-				
+				navigation_agent_2d.target_position = safe
 				while navigation_agent_2d.is_target_reachable() != true:
-					print("recal")
 					target = get_new_target()
 					nav_map = navigation_agent_2d.get_navigation_map()
 					safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
-				navigation_agent_2d.target_position = safe
+					navigation_agent_2d.target_position = safe
 				
 				
 				
@@ -99,15 +98,16 @@ func _physics_process(delta: float) -> void:
 				
 				
 				
-			print(navigation_agent_2d.get_next_path_position().distance_to(global_position))
+			#print(navigation_agent_2d.get_next_path_position().distance_to(global_position))
 			
 			
-			print(velocity.round())
+			#print(velocity.round())
 			if velocity.round() == Vector2.ZERO:
 				navigtimer -= delta * 10
 				if navigtimer < 0.0:
 					destination_reach()
 					navigtimer = 10.0
+					push_error("emergency fallback")
 			
 			
 			
@@ -131,15 +131,25 @@ func _physics_process(delta: float) -> void:
 	#print(navigation_agent_2d.is_target_reached())
 	#print(velocity)
 	
+	
+	
+	if clampi(velocity.x,-1,1) == -1:
+		animated_sprite_2d.flip_h = true
+	elif clampi(velocity.x,-1,1) == 1:
+		animated_sprite_2d.flip_h = false
 	move_and_slide()
 	
-	print(cur)
+	#print(cur)
 
 
 func get_new_target():
 	
-	var offx = randf_range(-2500,2500)
-	var offy = randf_range(-500,500)
+	var offx = randf_range(-1,1) * 2500
+	var offy = randi_range(0,2) * 1000
+	
+	
+	
+	
 	
 	if found:
 		return playerpos
@@ -174,5 +184,6 @@ func take_damage(playdamage:int):
 
 
 func detected(area: Area2D) -> void:
+	print(area.get_parent())
 	if area.get_parent() is Player:
 		found = true

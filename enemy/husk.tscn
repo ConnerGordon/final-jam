@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://bhy61r18tgkv"]
 
 [ext_resource type="Script" uid="uid://dja4ix4rd3eo0" path="res://enemy/first_enemy.gd" id="1_0vvse"]
-[ext_resource type="Texture2D" uid="uid://dpropmabtb244" path="res://icon.svg" id="2_wn8j1"]
+[ext_resource type="Texture2D" uid="uid://bfn5k65g6yhuu" path="res://newimports/tempdirection.webp" id="2_0vvse"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yjk2b"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_wn8j1")
+"texture": ExtResource("2_0vvse")
 }],
 "loop": true,
 "name": &"default",
@@ -30,12 +30,14 @@ collision_mask = 4
 script = ExtResource("1_0vvse")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
-path_desired_distance = 64.0
-target_desired_distance = 64.0
+path_desired_distance = 76.8
+target_desired_distance = 76.8
+path_max_distance = 30.0
 navigation_layers = 3
 path_postprocessing = 1
+simplify_epsilon = 10.055
 avoidance_enabled = true
-avoidance_layers = 2
+avoidance_layers = 0
 avoidance_mask = 14
 debug_enabled = true
 
@@ -46,18 +48,19 @@ sprite_frames = SubResource("SpriteFrames_yjk2b")
 shape = SubResource("RectangleShape2D_8p8xu")
 
 [node name="detecbox" type="Area2D" parent="." unique_id=1241152469]
+collision_layer = 2
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detecbox" unique_id=945585681]
 shape = SubResource("RectangleShape2D_nwalt")
 
 [node name="hurtbox" type="Area2D" parent="." unique_id=543940087]
+collision_layer = 2
+collision_mask = 7
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1088432644]
 shape = SubResource("RectangleShape2D_6b5m7")
-
-[node name="basepos" type="Marker2D" parent="." unique_id=1899378542]
 
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="destination_reach"]
 [connection signal="area_entered" from="detecbox" to="." method="detected"]

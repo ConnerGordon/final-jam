@@ -250,7 +250,7 @@ func momentconserv(acc: float)-> bool:
 
 
 func _on_bodydetec_body_entered(body: Node2D) -> void:
-	print(body)
+	
 	if body is TileMapLayer:
 		
 		var temphold = body.get_used_cells_by_id(0,Vector2i(4,3))
