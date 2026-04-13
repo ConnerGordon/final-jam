@@ -19,7 +19,7 @@ var var_health : float :
 
 
 enum state {idle, wandering,finding}
-var cur : state = state.idle
+@export var cur : state = state.idle
 
 var idle_timer := 5.0
 var found := false
@@ -36,10 +36,13 @@ func _ready() -> void:
 
 
 
-
+var postimer := 5.0
+var postrack := global_position
 func _physics_process(delta: float) -> void:
 	
 	
+	
+	postimer -= delta*10
 	
 	
 	if not is_on_floor():
@@ -66,9 +69,11 @@ func _physics_process(delta: float) -> void:
 				
 				var target = get_new_target()
 				var nav_map = navigation_agent_2d.get_navigation_map()
+				
 				var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
+				
 				navigation_agent_2d.target_position = safe
-				while navigation_agent_2d.is_target_reachable() != true:
+				while navigation_agent_2d.is_target_reachable() != true || target.distance_to(global_position) < 200:
 					target = get_new_target()
 					nav_map = navigation_agent_2d.get_navigation_map()
 					safe = NavigationServer2D.map_get_closest_point(nav_map,target)
@@ -84,6 +89,7 @@ func _physics_process(delta: float) -> void:
 				idle_timer = randf_range(2,20)
 		
 		state.wandering:
+			
 			var current_pos = global_transform.origin
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
@@ -101,13 +107,6 @@ func _physics_process(delta: float) -> void:
 			#print(navigation_agent_2d.get_next_path_position().distance_to(global_position))
 			
 			
-			#print(velocity.round())
-			if velocity.round() == Vector2.ZERO:
-				navigtimer -= delta * 10
-				if navigtimer < 0.0:
-					destination_reach()
-					navigtimer = 10.0
-					push_error("emergency fallback")
 			
 			
 			
@@ -137,6 +136,15 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.flip_h = true
 	elif clampi(velocity.x,-1,1) == 1:
 		animated_sprite_2d.flip_h = false
+	
+	
+	if postimer < 0.0:
+		print("position track called")
+		if postrack == global_position:
+			set_idle()
+			push_error("nav stuck on wall")
+		postrack = global_position
+		postimer = 20.0
 	move_and_slide()
 	
 	#print(cur)
@@ -174,6 +182,7 @@ func set_idle():
 
 
 func destination_reach() -> void:
+	print("call")
 	set_idle()
 
 
