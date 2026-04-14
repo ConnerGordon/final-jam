@@ -32,14 +32,18 @@ var end:= Vector2.ZERO
 
 func _ready() -> void:
 	var_health = 5
-	navigation_agent_2d.link_reached.connect(jump)
+	navigation_agent_2d.link_reached.connect(func(dict:Dictionary):
+		
+		jump(dict["link_entry_position"],dict["link_exit_position"])
+		)
 
 
 
 var postimer := 5.0
 var postrack := global_position
+var deltglobal := 0
 func _physics_process(delta: float) -> void:
-	
+	deltglobal = delta
 	
 	
 	postimer -= delta*10
@@ -95,12 +99,12 @@ func _physics_process(delta: float) -> void:
 			var direc = (next_position - current_pos).normalized()
 			if is_on_floor():
 				velocity.x = direc.x * SPEED
-			
+			if not is_on_floor():
+				velocity.x = direc.x *SPEED/10
 			
 			#var disto = navigation_agent_2d.get_next_path_position().distance_to(basepos.global_position)
 			
-			if uptime && start.y < end.y:
-				velocity.y -= abs(start.y-end.y*9.8*5/delta)
+			
 				
 				
 				
@@ -139,7 +143,6 @@ func _physics_process(delta: float) -> void:
 	
 	
 	if postimer < 0.0:
-		print("position track called")
 		if postrack == global_position:
 			set_idle()
 			push_error("nav stuck on wall")
@@ -153,7 +156,7 @@ func _physics_process(delta: float) -> void:
 func get_new_target():
 	
 	var offx = randf_range(-1,1) * 2500
-	var offy = randi_range(0,2) * 1000
+	var offy = randf_range(1,2) * -1000
 	
 	
 	
@@ -172,9 +175,9 @@ func get_new_target():
 	
 
 func jump(star:Vector2, en:Vector2):
-	uptime = true
-	start = star
-	end = en
+	print(abs((star.y-en.y)*9.8*2.5))
+	print((star.y-en.y))
+	velocity.y = -abs((star.y-en.y)*9.8*2.5)
 func set_idle():
 	idle_timer = randf_range(2,20)
 	cur = state.idle
@@ -182,8 +185,8 @@ func set_idle():
 
 
 func destination_reach() -> void:
-	print("call")
-	set_idle()
+	if is_on_floor():
+		set_idle()
 
 
 
