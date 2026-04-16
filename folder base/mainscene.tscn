@@ -42,7 +42,7 @@ scale = Vector2(83.59374, 1.109375)
 texture = SubResource("GradientTexture2D_kgh7c")
 
 [node name="CharacterBody2D" parent="." unique_id=103378180 instance=ExtResource("2_xwcau")]
-position = Vector2(-7307, -677)
+position = Vector2(-6075, 4323)
 
 [node name="gridmap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
 
@@ -50,7 +50,7 @@ position = Vector2(-7307, -677)
 position = Vector2(3040, 0)
 
 [node name="enemybase" parent="." unique_id=658416861 instance=ExtResource("5_kvtpo")]
-position = Vector2(-7444, -77)
+position = Vector2(-7365, 4243)
 
 [node name="gridmap2" parent="." unique_id=227575916 instance=ExtResource("6_ktlqv")]
-position = Vector2(-7924, -4391.9995)
+position = Vector2(-7924, 0)
