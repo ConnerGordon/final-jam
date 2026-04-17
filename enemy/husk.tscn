@@ -31,7 +31,7 @@ script = ExtResource("1_0vvse")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
 path_desired_distance = 80.0
-target_desired_distance = 20.0
+target_desired_distance = 50.0
 navigation_layers = 3
 path_postprocessing = 1
 simplify_epsilon = 9.423

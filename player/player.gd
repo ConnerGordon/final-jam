@@ -2,8 +2,10 @@ extends CharacterBody2D
 class_name Player
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var groundedswordbox: Area2D = $AnimatedSprite2D/groundedswordbox
 
+@onready var groundedswordbox: Area2D = $groundedswordbox
+
+@onready var attacktimer: Timer = $attacktimer
 
 
 
@@ -100,6 +102,7 @@ func _physics_process(delta: float) -> void:
 			velocity.x = direction * SPEED
 			if direction != 0.0:
 				prevdir = direction
+			
 		state.dashing:
 			#print("dash")
 			if prevdir == -1:
@@ -167,6 +170,9 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 		
+	if direction != 0.0:
+		groundedswordbox.position = Vector2(95 * direction,0)
+		print(groundedswordbox.position)
 	match aircurrent:
 
 		airbornstate.grounded:
@@ -197,6 +203,12 @@ func _physics_process(delta: float) -> void:
 				
 				current = state.idle
 			
+			
+			
+			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
+				attacktimer.start()
+				groundedswordbox.monitoring = true
+				
 			
 			if dashtimer > dtb/20:
 				if Input.is_action_just_pressed("swing") && aircurrent == airbornstate.grounded:
@@ -261,3 +273,8 @@ func _on_bodydetec_body_entered(body: Node2D) -> void:
 			
 			body.set_cell(i,-1,Vector2i(-1,-1),-1)
 		nextgen.emit()
+
+
+func _on_attacktimer_timeout() -> void:
+	print("pcalled")
+	groundedswordbox.monitoring = true

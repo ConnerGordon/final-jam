@@ -79,37 +79,50 @@ func _physics_process(delta: float) -> void:
 			idle_timer -= delta*10
 			if idle_timer <= 0:
 				
-				
-				var target = get_new_target()
-				var nav_map = navigation_agent_2d.get_navigation_map()
-				
-				var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
-				
-				navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
-				print(safe.snapped(Vector2(80,80)))
-				while safe.distance_to(global_position) < 500 && found == false:
-					print("too close")
-					nav_map = navigation_agent_2d.get_navigation_map()
-					target = NavigationServer2D.map_get_random_point(nav_map,1,true)
-					
-					safe = NavigationServer2D.map_get_closest_point(nav_map,target)
-					
+				if !found:
 						
-						
+					var target = get_new_target()
+					var nav_map = navigation_agent_2d.get_navigation_map()
+					
+					var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
 					navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
 					print(safe.snapped(Vector2(80,80)))
-				
+					while safe.distance_to(global_position) < 500 && found == false:
+						print("too close")
+						nav_map = navigation_agent_2d.get_navigation_map()
+						target = NavigationServer2D.map_get_random_point(nav_map,1,true)
+						
+						safe = NavigationServer2D.map_get_closest_point(nav_map,target)
+						
+						
+						
+						
+						navigation_agent_2d.target_position = (safe).snapped(Vector2(80,80))
+						print(safe.snapped(Vector2(80,80)))
+				else:
+					var target = playerpos
+					var nav_map = navigation_agent_2d.get_navigation_map()
+					
+					var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
+					
+					navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
+					print(safe.snapped(Vector2(80,80)))
+					while safe.distance_to(global_position) < 500 && found == false:
+						print("too close")
+						nav_map = navigation_agent_2d.get_navigation_map()
+						target = playerpos
+						
+						safe = NavigationServer2D.map_get_closest_point(nav_map,target)
+						
 				
 				
 				if found:
 					cur = state.finding
 				else:
 					cur = state.wandering
-				if found == false:
 					idle_timer = randf_range(2,20)
-				else:
-					idle_timer = randf_range(1,3)
+
 		
 		state.wandering:
 			
@@ -204,6 +217,8 @@ func _physics_process(delta: float) -> void:
 			push_error("nav stuck on wall")
 		postrack = global_position
 		postimer = 20.0
+		if found:
+			postimer = 10.0
 	move_and_slide()
 	
 	#print(cur)
@@ -244,7 +259,6 @@ func jump(star:Vector2, en:Vector2):
 		lerpstart = star
 		lerptimer = 1.0
 func set_idle():
-	idle_timer = randf_range(2,20)
 	cur = state.idle
 	
 
