@@ -6,7 +6,9 @@ class_name Player
 @onready var groundedswordbox: Area2D = $groundedswordbox
 
 @onready var attacktimer: Timer = $attacktimer
+@onready var airhitbox: Area2D = $airhitbox
 
+@onready var upwardhitbox: Area2D = $upwardhitbox
 
 
 
@@ -134,14 +136,14 @@ func _physics_process(delta: float) -> void:
 			if wallright.is_colliding() && (is_on_floor() == false):
 				airdash = true
 				dashtimer = dtb
-				velocity.y = -JUMP_VELOCITY/1.5
-				print("right")
+				velocity.y = -JUMP_VELOCITY/1.3
+				
 				velocity.x = -SPEED*2
 			if wallleft.is_colliding() && (is_on_floor() == false):
-				print("left")
+				
 				airdash = true
 				dashtimer = dtb
-				velocity.y = -JUMP_VELOCITY/1.5
+				velocity.y = -JUMP_VELOCITY/1.3
 				velocity.x = SPEED*2
 			if velocity.y < 0:
 				current = state.falling
@@ -150,7 +152,7 @@ func _physics_process(delta: float) -> void:
 			
 			if dashtimer <= 0:
 				groundedswordbox.monitoring = false
-				print(aircurrent)
+				#print(aircurrent)
 				if aircurrent == airbornstate.falling:
 					velocity.x = clampf(velocity.x,-SPEED/1.2,SPEED/1.2)
 					current = state.falling
@@ -172,7 +174,8 @@ func _physics_process(delta: float) -> void:
 		
 	if direction != 0.0:
 		groundedswordbox.position = Vector2(95 * direction,0)
-		print(groundedswordbox.position)
+		airhitbox.position = Vector2(30*direction,0)
+		#print(groundedswordbox.position)
 	match aircurrent:
 
 		airbornstate.grounded:
@@ -208,6 +211,9 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
 				attacktimer.start()
 				groundedswordbox.monitoring = true
+				if Input.is_action_pressed("lookup"):
+					upwardhitbox.monitoring = true
+				
 				
 			
 			if dashtimer > dtb/20:
@@ -223,6 +229,13 @@ func _physics_process(delta: float) -> void:
 				JUMP_VELOCITY = jumpdefault
 				current = state.jumping
 				
+			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
+				attacktimer.start()
+				groundedswordbox.monitoring = true
+				if Input.is_action_pressed("lookup"):
+					upwardhitbox.monitoring = true
+				elif Input.is_action_pressed("FALL"):
+					airhitbox.monitoring = true
 			if dashtimer == dtb && Input.is_action_pressed("movementkeys") == false:
 				current = state.falling
 	
@@ -266,7 +279,7 @@ func _on_bodydetec_body_entered(body: Node2D) -> void:
 	if body is TileMapLayer:
 		
 		var temphold = body.get_used_cells_by_id(0,Vector2i(4,3))
-		print(temphold[0])
+		#print(temphold[0])
 		
 		
 		for i in temphold:
@@ -277,4 +290,6 @@ func _on_bodydetec_body_entered(body: Node2D) -> void:
 
 func _on_attacktimer_timeout() -> void:
 	print("pcalled")
-	groundedswordbox.monitoring = true
+	groundedswordbox.monitoring = false
+	airhitbox.monitoring= false
+	upwardhitbox.monitoring = false

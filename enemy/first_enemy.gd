@@ -87,9 +87,9 @@ func _physics_process(delta: float) -> void:
 					var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
 					navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
-					print(safe.snapped(Vector2(80,80)))
+					
 					while safe.distance_to(global_position) < 500 && found == false:
-						print("too close")
+						
 						nav_map = navigation_agent_2d.get_navigation_map()
 						target = NavigationServer2D.map_get_random_point(nav_map,1,true)
 						
@@ -99,7 +99,7 @@ func _physics_process(delta: float) -> void:
 						
 						
 						navigation_agent_2d.target_position = (safe).snapped(Vector2(80,80))
-						print(safe.snapped(Vector2(80,80)))
+						
 				else:
 					var target = playerpos
 					var nav_map = navigation_agent_2d.get_navigation_map()
@@ -107,9 +107,9 @@ func _physics_process(delta: float) -> void:
 					var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
 					navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
-					print(safe.snapped(Vector2(80,80)))
+					
 					while safe.distance_to(global_position) < 500 && found == false:
-						print("too close")
+						
 						nav_map = navigation_agent_2d.get_navigation_map()
 						target = playerpos
 						
@@ -140,13 +140,13 @@ func _physics_process(delta: float) -> void:
 			
 			
 			if lerptimer >= 0:
-				
-				global_position = global_position.lerp(lerppos, 1-lerptimer)
-				
+				var gp = global_position.lerp(lerppos, 1-lerptimer)
+				global_position.y = gp.y
+				if 1-lerptimer < 1.0/5.0:
+					global_position.x = lerp(global_position.x,lerppos.x,1.0/5 - lerptimer/5.0)
 				lerptimer-= delta/2
 				if lerppos.distance_to(global_position) < 50:
 					lerptimer = -1
-			
 			if direc.y < -0.6 && is_on_wall() && is_on_floor():
 					velocity.y -= 600
 				
@@ -164,30 +164,38 @@ func _physics_process(delta: float) -> void:
 			
 			
 		state.finding:
+			var target = playerpos
+			var nav_map = navigation_agent_2d.get_navigation_map()
 			
+			var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
+			navigation_agent_2d.target_position = safe
 			var current_pos = global_transform.origin
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
 			if is_on_floor():
-				velocity.x = direc.x * SPEED
+				velocity.x = direc.x * SPEED*2
+				
 			if not is_on_floor():
-				velocity.x = direc.x *SPEED/10
+				velocity.x = direc.x *SPEED*2/10
 			
 			
-			
+			#print(velocity)
 			
 			
 			
 			if lerptimer >= 0:
-				
-				global_position = global_position.lerp(lerppos, 1-lerptimer)
-				
+				print(lerptimer)
+				var gp = global_position.lerp(lerppos, 1-lerptimer)
+				global_position.y = gp.y
 				lerptimer-= delta/2
 				if lerppos.distance_to(global_position) < 50:
 					lerptimer = -1
+			if lerptimer <= 0 && lerptimer >= -0.5:
+				var gp = global_position.lerp(lerppos, 1-abs(lerptimer)*2)
+				global_position.x = gp.x
 			
-			if direc.y < -0.6 && is_on_wall() && is_on_floor():
-					velocity.y -= 600
+			if direc.y < -0.65 && is_on_wall() && is_on_floor() && lerptimer < 0:
+				velocity.y -= 600
 			
 			if velocity == Vector2.ZERO:
 				navigtimer -= delta
@@ -221,7 +229,7 @@ func _physics_process(delta: float) -> void:
 			postimer = 10.0
 	move_and_slide()
 	
-	#print(cur)
+	print(cur)
 
 
 func get_new_target():
@@ -254,7 +262,7 @@ func get_new_target():
 
 func jump(star:Vector2, en:Vector2):
 	
-	if star.distance_to(global_position) < 100:
+	if star.distance_to(global_position) < 100 && lerptimer < 0:
 		lerppos = en
 		lerpstart = star
 		lerptimer = 1.0
@@ -275,7 +283,8 @@ func take_damage(playdamage:int):
 
 
 func detected(area: Area2D) -> void:
-	print(area.get_parent())
+	
 	if area.get_parent() is Player && found == false:
 		found = true
-		cur = state.idle
+		cur = state.finding
+		

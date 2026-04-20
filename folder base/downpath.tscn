@@ -189,26 +189,26 @@ position = Vector2(608, 880)
 [node name="NavigationLink2D" type="NavigationLink2D" parent="." unique_id=786904234]
 position = Vector2(46.600002, 864.19995)
 navigation_layers = 3
-start_position = Vector2(-4, 1)
-end_position = Vector2(35.6, -130.40002)
+start_position = Vector2(9.399998, 6.799988)
+end_position = Vector2(39.6, -121)
 
 [node name="NavigationLink2D2" type="NavigationLink2D" parent="." unique_id=60418671]
 position = Vector2(438.59998, 739.7999)
 navigation_layers = 2
-start_position = Vector2(-41.799988, -130.3999)
-end_position = Vector2(-0.7999878, -0.59991455)
+start_position = Vector2(-45.799988, -124.19989)
+end_position = Vector2(-20.799988, 3.8001099)
 
 [node name="NavigationLink2D3" type="NavigationLink2D" parent="." unique_id=1562989433]
 position = Vector2(351.39996, 666.4)
 navigation_layers = 2
-start_position = Vector2(-50.599945, -119.400024)
-end_position = Vector2(-17.799957, -73.400024)
+start_position = Vector2(-57.99994, -115.20001)
+end_position = Vector2(-28.799957, -68)
 
 [node name="NavigationLink2D4" type="NavigationLink2D" parent="." unique_id=648249757]
 position = Vector2(308.40002, 620.4)
 navigation_layers = 2
-start_position = Vector2(-55.000015, -140.6)
-end_position = Vector2(-30.400024, -75.599976)
+start_position = Vector2(-67.8, -135)
+end_position = Vector2(-35.600006, -68.79999)
 
 [node name="NavigationLink2D5" type="NavigationLink2D" parent="." unique_id=944276917]
 position = Vector2(215.2, 616.8)

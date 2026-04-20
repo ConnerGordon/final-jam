@@ -23,8 +23,16 @@ animations = [{
 size = Vector2(156, 178)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkbax"]
+radius = 50.000008
+height = 128.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g1dw6"]
 radius = 40.0
 height = 128.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yw30f"]
+radius = 68.0
+height = 136.0
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=103378180 groups=["player"]]
 top_level = true
@@ -60,7 +68,7 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="groundedswordbox" unique_id=925681849]
-position = Vector2(0, 3)
+position = Vector2(-6.750156e-14, -16.000002)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_rkbax")
 
@@ -76,6 +84,23 @@ shape = SubResource("RectangleShape2D_i3pqv")
 [node name="attacktimer" type="Timer" parent="." unique_id=291936183]
 wait_time = 0.35
 one_shot = true
+
+[node name="airhitbox" type="Area2D" parent="." unique_id=1257302519]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="airhitbox" unique_id=374935385]
+position = Vector2(0, 68)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_g1dw6")
+
+[node name="upwardhitbox" type="Area2D" parent="." unique_id=243975332]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="upwardhitbox" unique_id=198316899]
+position = Vector2(0, -96)
+shape = SubResource("CapsuleShape2D_yw30f")
 
 [connection signal="area_entered" from="bodydetec" to="." method="_on_bodydetec_area_entered"]
 [connection signal="body_entered" from="bodydetec" to="." method="_on_bodydetec_body_entered"]
