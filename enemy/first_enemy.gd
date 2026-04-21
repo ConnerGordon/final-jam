@@ -68,7 +68,6 @@ func _physics_process(delta: float) -> void:
 	
 	
 	
-	
 	match cur:
 		state.idle:
 			if is_on_floor():
@@ -80,9 +79,9 @@ func _physics_process(delta: float) -> void:
 			if idle_timer <= 0:
 				
 				if !found:
-						
-					var target = get_new_target()
 					var nav_map = navigation_agent_2d.get_navigation_map()
+					var target = NavigationServer2D.map_get_random_point(nav_map,1,true)
+					
 					
 					var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
@@ -182,17 +181,23 @@ func _physics_process(delta: float) -> void:
 			#print(velocity)
 			
 			
-			
-			if lerptimer >= 0:
-				print(lerptimer)
-				var gp = global_position.lerp(lerppos, 1-lerptimer)
-				global_position.y = gp.y
-				lerptimer-= delta/2
-				if lerppos.distance_to(global_position) < 50:
-					lerptimer = -1
-			if lerptimer <= 0 && lerptimer >= -0.5:
-				var gp = global_position.lerp(lerppos, 1-abs(lerptimer)*2)
-				global_position.x = gp.x
+			#var postween := create_tween()
+			#postween.tween_property(self, "global_position",lerppos,1.0)
+			#if lerptimer > 0:
+				#
+				#var gp = global_position.lerp(lerppos, 1-lerptimer)
+				#global_position.y = gp.y
+				#lerptimer-= delta/2
+				#if lerppos.y - global_position.y < 10:
+					#lerptimer = 0
+			#if lerptimer <= 0 && lerptimer >= -0.5:
+				#
+				#global_position.y = lerppos.y
+				#var gp = global_position.lerp(lerppos, 1-abs(lerptimer)*2)
+				#global_position.x = gp.x
+				#lerptimer-= delta/2
+				#if lerppos.distance_to(global_position) < 20:
+					#lerptimer = -1
 			
 			if direc.y < -0.65 && is_on_wall() && is_on_floor() && lerptimer < 0:
 				velocity.y -= 600
@@ -229,7 +234,7 @@ func _physics_process(delta: float) -> void:
 			postimer = 10.0
 	move_and_slide()
 	
-	print(cur)
+	#print(cur)
 
 
 func get_new_target():
@@ -261,11 +266,30 @@ func get_new_target():
 	
 
 func jump(star:Vector2, en:Vector2):
-	
-	if star.distance_to(global_position) < 100 && lerptimer < 0:
-		lerppos = en
-		lerpstart = star
-		lerptimer = 1.0
+		print(star)
+		print(en)
+	#if star.distance_to(global_position) < 100 && lerptimer < 0:
+		#print(en)
+		#print(star)
+		#lerppos = en
+		#lerpstart = star
+		#lerptimer = 1.0
+		if star.y > en.y:
+			global_position = star
+			print("tried")
+			var postween := create_tween()
+			#postween.set_trans(Tween.TRANS_SINE)
+			postween.tween_property(self, "global_position",Vector2(star.x,en.y),.50)
+			await postween.finished
+			var postweenx := create_tween()
+			#postweenx.set_trans(Tween.TRANS_SINE)
+			postweenx.tween_property(self, "global_position",en,.25)
+		elif star.y < en.y :
+			pass
+			#var postweenx := create_tween()
+			#postweenx.set_trans(Tween.TRANS_SINE)
+			#postweenx.tween_property(self, "global_position",Vector2(en.x,star.y-20),.1)
+			#postween.set_trans(Tween.TRANS_SINE)
 func set_idle():
 	cur = state.idle
 	

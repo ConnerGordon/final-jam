@@ -32,7 +32,7 @@ script = ExtResource("1_0vvse")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
 path_desired_distance = 80.0
 target_desired_distance = 50.0
-navigation_layers = 3
+navigation_layers = 7
 path_postprocessing = 1
 simplify_epsilon = 9.423
 avoidance_enabled = true
@@ -42,6 +42,8 @@ avoidance_mask = 14
 debug_enabled = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1112094005]
+position = Vector2(-0.4999981, -2.9802322e-06)
+scale = Vector2(0.54273504, 0.53846157)
 sprite_frames = SubResource("SpriteFrames_yjk2b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1876870390]

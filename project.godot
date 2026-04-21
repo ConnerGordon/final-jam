@@ -96,10 +96,6 @@ avoidance/layer_3="world"
 avoidance/layer_4="trap?"
 avoidance/layer_5="spec"
 
-[navigation]
-
-2d/default_link_connection_radius=25.0
-
 [physics]
 
 3d/physics_engine="Jolt Physics"

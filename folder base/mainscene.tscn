@@ -50,7 +50,7 @@ position = Vector2(-6075, 4323)
 position = Vector2(3040, 0)
 
 [node name="enemybase" parent="." unique_id=658416861 instance=ExtResource("5_kvtpo")]
-position = Vector2(-7365, 4243)
+position = Vector2(-7057, 4332)
 
 [node name="gridmap2" parent="." unique_id=227575916 instance=ExtResource("6_ktlqv")]
 position = Vector2(-7924, 0)
