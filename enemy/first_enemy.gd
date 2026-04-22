@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const SPEED = 300.0
+const SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -39,9 +39,6 @@ func _ready() -> void:
 		jump(dict["link_entry_position"],dict["link_exit_position"])
 		)
 
-var lerptimer := -1.0
-var lerppos
-var lerpstart
 
 var postimer := 5.0
 var postrack := global_position
@@ -73,8 +70,6 @@ func _physics_process(delta: float) -> void:
 			if is_on_floor():
 				
 				velocity = Vector2(0,0)
-			else:
-				velocity = Vector2(velocity.x,0)
 			idle_timer -= delta*10
 			if idle_timer <= 0:
 				
@@ -107,7 +102,8 @@ func _physics_process(delta: float) -> void:
 					
 					navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
 					
-					while safe.distance_to(global_position) < 500 && found == false:
+					while (safe.distance_to(global_position) < 500 && found == false || 
+					navigation_agent_2d.target_position.):
 						
 						nav_map = navigation_agent_2d.get_navigation_map()
 						target = playerpos
@@ -129,26 +125,20 @@ func _physics_process(delta: float) -> void:
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
 			if is_on_floor():
-				velocity.x = direc.x * SPEED
-			if not is_on_floor():
-				velocity.x = direc.x *SPEED/10
-			
-			
-			
-			
-			
-			
-			if lerptimer >= 0:
-				var gp = global_position.lerp(lerppos, 1-lerptimer)
-				global_position.y = gp.y
-				if 1-lerptimer < 1.0/5.0:
-					global_position.x = lerp(global_position.x,lerppos.x,1.0/5 - lerptimer/5.0)
-				lerptimer-= delta/2
-				if lerppos.distance_to(global_position) < 50:
-					lerptimer = -1
-			if direc.y < -0.6 && is_on_wall() && is_on_floor():
-					velocity.y -= 600
+				if abs(velocity.x + direc.x * SPEED) < SPEED*1.5:
+					velocity.x += direc.x * SPEED
 				
+			if not is_on_floor():
+				if abs(velocity.x + direc.x * SPEED*2/10) < SPEED/2:
+					velocity.x += direc.x *SPEED*2/10
+			
+			if navigation_agent_2d.is_target_reachable() != true:
+				set_idle()
+			
+			
+			
+			
+			#
 			
 			#var disto = navigation_agent_2d.get_next_path_position().distance_to(basepos.global_position)
 			
@@ -172,35 +162,15 @@ func _physics_process(delta: float) -> void:
 			var next_position = navigation_agent_2d.get_next_path_position()
 			var direc = (next_position - current_pos).normalized()
 			if is_on_floor():
-				velocity.x = direc.x * SPEED*2
+				if abs(velocity.x + direc.x * SPEED) < SPEED * 2:
+					velocity.x += direc.x * SPEED
 				
 			if not is_on_floor():
-				velocity.x = direc.x *SPEED*2/10
+				if abs(velocity.x + direc.x * SPEED*2/10) < SPEED:
+					velocity.x += direc.x *SPEED*2/10
 			
 			
-			#print(velocity)
 			
-			
-			#var postween := create_tween()
-			#postween.tween_property(self, "global_position",lerppos,1.0)
-			#if lerptimer > 0:
-				#
-				#var gp = global_position.lerp(lerppos, 1-lerptimer)
-				#global_position.y = gp.y
-				#lerptimer-= delta/2
-				#if lerppos.y - global_position.y < 10:
-					#lerptimer = 0
-			#if lerptimer <= 0 && lerptimer >= -0.5:
-				#
-				#global_position.y = lerppos.y
-				#var gp = global_position.lerp(lerppos, 1-abs(lerptimer)*2)
-				#global_position.x = gp.x
-				#lerptimer-= delta/2
-				#if lerppos.distance_to(global_position) < 20:
-					#lerptimer = -1
-			
-			if direc.y < -0.65 && is_on_wall() && is_on_floor() && lerptimer < 0:
-				velocity.y -= 600
 			
 			if velocity == Vector2.ZERO:
 				navigtimer -= delta
@@ -285,7 +255,8 @@ func jump(star:Vector2, en:Vector2):
 			#postweenx.set_trans(Tween.TRANS_SINE)
 			postweenx.tween_property(self, "global_position",en,.25)
 		elif star.y < en.y :
-			pass
+			if is_on_floor():
+				velocity.x += SPEED/4 * sign(en.x-star.x)
 			#var postweenx := create_tween()
 			#postweenx.set_trans(Tween.TRANS_SINE)
 			#postweenx.tween_property(self, "global_position",Vector2(en.x,star.y-20),.1)

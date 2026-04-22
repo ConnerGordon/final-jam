@@ -252,3 +252,11 @@ position = Vector2(183.6, 616.8)
 navigation_layers = 2
 start_position = Vector2(-4.600006, -133.80002)
 end_position = Vector2(-61.6, -134.20001)
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=472844851]
+visible = false
+position = Vector2(230.20001, 514.2)
+radius = 20.0
+vertices = PackedVector2Array(-196.59998, 14.600037, -196.19998, 26.200012, -168.4, 26.600037, -168.79999, 14.200012, -99.999985, 15, -99.59999, 26.200012, -56.799988, 26.200012, -56.399994, 13.799988, 27, 31.600037, 27.799988, 43.600037, 73.600006, 43.600037, 72.79999, 78.60004, 77.600006, 77.79999, 77.600006, 91.79999, 120.79999, 91.79999, 121.20001, 105.20001, 169.4, 105.20001, 169.4, 154, -211.19998, 29.600037)
+carve_navigation_mesh = true
+avoidance_layers = 4
