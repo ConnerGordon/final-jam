@@ -1,50 +1,22 @@
 [gd_scene format=3 uid="uid://1ssjywk2tygk"]
 
 [ext_resource type="Script" uid="uid://bfbfntngwqypj" path="res://folder base/mainscene.gd" id="1_8yg2a"]
-[ext_resource type="Texture2D" uid="uid://sd5wmwxaju4s" path="res://newimports/output-onlinetools (3).png" id="1_tm4rf"]
 [ext_resource type="PackedScene" uid="uid://dfnvdcqkio0fe" path="res://player/player.tscn" id="2_xwcau"]
 [ext_resource type="PackedScene" uid="uid://bfa4do156wj2s" path="res://folder base/basehall1.tscn" id="3_kgh7c"]
 [ext_resource type="PackedScene" uid="uid://bhy61r18tgkv" path="res://enemy/husk.tscn" id="5_kvtpo"]
 [ext_resource type="PackedScene" uid="uid://5ihu4cisx2o0" path="res://folder base/downpath.tscn" id="6_ktlqv"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xwcau"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kgh7c"]
-size = Vector2(5346, 55.5)
-
-[sub_resource type="Gradient" id="Gradient_xwcau"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_kgh7c"]
-gradient = SubResource("Gradient_xwcau")
-
 [node name="main" type="Node2D" unique_id=48686554]
 script = ExtResource("1_8yg2a")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1361564345]
-offset_left = -5792.0
-offset_top = 4853.0
-offset_right = -3872.0
-offset_bottom = 5933.0
-scale = Vector2(0.605, 0.605)
-texture = ExtResource("1_tm4rf")
+[node name="enemyholder" type="Node2D" parent="." unique_id=1068538532]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1610737700]
-position = Vector2(-3295, 5514)
-physics_material_override = SubResource("PhysicsMaterial_xwcau")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1528174179]
-position = Vector2(-61, 4.25)
-shape = SubResource("RectangleShape2D_kgh7c")
-
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=269859940]
-position = Vector2(-63, 3.5)
-scale = Vector2(83.59374, 1.109375)
-texture = SubResource("GradientTexture2D_kgh7c")
+[node name="mapholder" type="Node2D" parent="." unique_id=314610917]
 
 [node name="CharacterBody2D" parent="." unique_id=103378180 instance=ExtResource("2_xwcau")]
 position = Vector2(-6495, 1971)
 
-[node name="gridmap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
+[node name="primemap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
 
 [node name="nextmappoint" type="Marker2D" parent="." unique_id=781514354]
 position = Vector2(3040, 0)

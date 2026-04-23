@@ -5,8 +5,13 @@ const SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var backnav: NavigationAgent2D = $backnav
 
 var navigtimer := 10.0
+
+
+
+
 
 var var_health : float :
 	set(new_health):
@@ -74,7 +79,8 @@ func _physics_process(delta: float) -> void:
 			if idle_timer <= 0:
 				
 				if !found:
-					var nav_map = navigation_agent_2d.get_navigation_map()
+					
+					var nav_map = backnav.get_navigation_map()
 					var target = NavigationServer2D.map_get_random_point(nav_map,1,true)
 					
 					
@@ -84,7 +90,7 @@ func _physics_process(delta: float) -> void:
 					
 					while safe.distance_to(global_position) < 500 && found == false:
 						
-						nav_map = navigation_agent_2d.get_navigation_map()
+						nav_map = backnav.get_navigation_map()
 						target = NavigationServer2D.map_get_random_point(nav_map,1,true)
 						
 						safe = NavigationServer2D.map_get_closest_point(nav_map,target)
@@ -95,20 +101,18 @@ func _physics_process(delta: float) -> void:
 						navigation_agent_2d.target_position = (safe).snapped(Vector2(80,80))
 						
 				else:
-					var target = playerpos
-					var nav_map = navigation_agent_2d.get_navigation_map()
 					
-					var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 					
-					navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
 					
-					while (safe.distance_to(global_position) < 500 && found == false || 
-					navigation_agent_2d.target_position.):
-						
-						nav_map = navigation_agent_2d.get_navigation_map()
-						target = playerpos
-						
-						safe = NavigationServer2D.map_get_closest_point(nav_map,target)
+					var nav_map = backnav.get_navigation_map()
+					var target = NavigationServer2D.map_get_closest_point(nav_map,playerpos)
+					
+					var safe = target
+					
+					
+					
+					navigation_agent_2d.target_position =safe#.snapped(Vector2(80,80))
+					
 						
 				
 				
@@ -127,13 +131,16 @@ func _physics_process(delta: float) -> void:
 			if is_on_floor():
 				if abs(velocity.x + direc.x * SPEED) < SPEED*1.5:
 					velocity.x += direc.x * SPEED
+				if is_on_wall():
+					var distpos = next_position.distance_to(next_position)
+					if distpos >75 && distpos< 125 && velocity.x == 0:
+						velocity.y -= 600
 				
 			if not is_on_floor():
 				if abs(velocity.x + direc.x * SPEED*2/10) < SPEED/2:
 					velocity.x += direc.x *SPEED*2/10
 			
-			if navigation_agent_2d.is_target_reachable() != true:
-				set_idle()
+			
 			
 			
 			
@@ -154,7 +161,7 @@ func _physics_process(delta: float) -> void:
 			
 		state.finding:
 			var target = playerpos
-			var nav_map = navigation_agent_2d.get_navigation_map()
+			var nav_map = backnav.get_navigation_map()
 			
 			var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 			navigation_agent_2d.target_position = safe
@@ -164,6 +171,12 @@ func _physics_process(delta: float) -> void:
 			if is_on_floor():
 				if abs(velocity.x + direc.x * SPEED) < SPEED * 2:
 					velocity.x += direc.x * SPEED
+					
+					
+				if is_on_wall():
+					var distpos = next_position.distance_to(next_position)
+					if distpos >75 && distpos< 125 && velocity.x ==0:
+						velocity.y -= 600
 				
 			if not is_on_floor():
 				if abs(velocity.x + direc.x * SPEED*2/10) < SPEED:
@@ -256,6 +269,7 @@ func jump(star:Vector2, en:Vector2):
 			postweenx.tween_property(self, "global_position",en,.25)
 		elif star.y < en.y :
 			if is_on_floor():
+				velocity.y -= 400
 				velocity.x += SPEED/4 * sign(en.x-star.x)
 			#var postweenx := create_tween()
 			#postweenx.set_trans(Tween.TRANS_SINE)
@@ -269,6 +283,8 @@ func set_idle():
 func destination_reach() -> void:
 	if is_on_floor():
 		set_idle()
+		if !found: 
+			idle_timer= randf_range(2,20)
 
 
 
