@@ -30,12 +30,13 @@ collision_mask = 4
 script = ExtResource("1_0vvse")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
-path_desired_distance = 80.0
+path_desired_distance = 160.7
 target_desired_distance = 50.0
 path_max_distance = 200.0
 navigation_layers = 7
 path_postprocessing = 1
-simplify_epsilon = 9.423
+simplify_path = true
+simplify_epsilon = 6.5
 avoidance_enabled = true
 max_speed = 500.0
 avoidance_layers = 2
@@ -43,18 +44,6 @@ avoidance_mask = 14
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.11638088, 0.40457034, 2.8878452e-07, 1)
-
-[node name="backnav" type="NavigationAgent2D" parent="." unique_id=162944293]
-path_desired_distance = 80.0
-target_desired_distance = 50.0
-path_max_distance = 200.0
-navigation_layers = 3
-path_postprocessing = 1
-avoidance_enabled = true
-max_speed = 500.0
-avoidance_layers = 2
-avoidance_mask = 14
-debug_enabled = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1112094005]
 position = Vector2(-0.4999981, -2.9802322e-06)

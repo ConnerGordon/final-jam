@@ -9,7 +9,7 @@ const JUMP_VELOCITY = -400.0
 
 var navigtimer := 10.0
 
-
+var valmove := true
 
 
 
@@ -80,7 +80,7 @@ func _physics_process(delta: float) -> void:
 				
 				if !found:
 					
-					var nav_map = backnav.get_navigation_map()
+					var nav_map = navigation_agent_2d.get_navigation_map()
 					var target = NavigationServer2D.map_get_random_point(nav_map,1,true)
 					
 					
@@ -88,9 +88,9 @@ func _physics_process(delta: float) -> void:
 					
 					navigation_agent_2d.target_position = safe#.snapped(Vector2(80,80))
 					
-					while safe.distance_to(global_position) < 500 && found == false:
+					while safe.distance_to(global_position) < 500 && found == false || navigation_agent_2d.is_target_reachable() != true:
 						
-						nav_map = backnav.get_navigation_map()
+						nav_map = navigation_agent_2d.get_navigation_map()
 						target = NavigationServer2D.map_get_random_point(nav_map,1,true)
 						
 						safe = NavigationServer2D.map_get_closest_point(nav_map,target)
@@ -104,11 +104,10 @@ func _physics_process(delta: float) -> void:
 					
 					
 					
-					var nav_map = backnav.get_navigation_map()
+					var nav_map = navigation_agent_2d.get_navigation_map()
 					var target = NavigationServer2D.map_get_closest_point(nav_map,playerpos)
 					
-					var safe = target
-					
+					var safe = Vector2(int(target.x) - int(target.x)%80,int(target.y)-int(target.y)%80) + Vector2(40,40)
 					
 					
 					navigation_agent_2d.target_position =safe#.snapped(Vector2(80,80))
@@ -141,7 +140,8 @@ func _physics_process(delta: float) -> void:
 					velocity.x += direc.x *SPEED*2/10
 			
 			
-			
+			if navigation_agent_2d.is_target_reachable() != true:
+				set_idle()
 			
 			
 			
@@ -161,7 +161,7 @@ func _physics_process(delta: float) -> void:
 			
 		state.finding:
 			var target = playerpos
-			var nav_map = backnav.get_navigation_map()
+			var nav_map = navigation_agent_2d.get_navigation_map()
 			
 			var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 			navigation_agent_2d.target_position = safe
@@ -174,12 +174,14 @@ func _physics_process(delta: float) -> void:
 					
 					
 				if is_on_wall():
+					print("wall")
 					var distpos = next_position.distance_to(next_position)
 					if distpos >75 && distpos< 125 && velocity.x ==0:
 						velocity.y -= 600
+						
 				
 			if not is_on_floor():
-				if abs(velocity.x + direc.x * SPEED*2/10) < SPEED:
+				if abs(velocity.x + direc.x * SPEED*2/10) < SPEED/2:
 					velocity.x += direc.x *SPEED*2/10
 			
 			
@@ -220,37 +222,35 @@ func _physics_process(delta: float) -> void:
 	#print(cur)
 
 
-func get_new_target():
-	var offx = global_position.x
-	var offy = global_position.y 
-	
-	
-	if found:
-		return playerpos
-	
-	
-	while Vector2(offx,offy).distance_to(global_position) < 500:
-		offx = randf_range(-1,1) * 2500
-		offy = randi_range(-1,1) * 1000
-	
-	
-	
-	
-	
-	
-	
-	return global_position + Vector2(offx,offy)
-	
-	
-	
-	
-	
-	
-	
+#func get_new_target():
+	#var offx = global_position.x
+	#var offy = global_position.y 
+	#
+	#
+	#if found:
+		#return playerpos
+	#
+	#
+	#while Vector2(offx,offy).distance_to(global_position) < 500:
+		#offx = randf_range(-1,1) * 2500
+		#offy = randi_range(-1,1) * 1000
+	#
+	#
+	#
+	#
+	#
+	#
+	#
+	#return global_position + Vector2(offx,offy)
+	#
+	#
+	#
+	#
+	#
+	#
+	#
 
 func jump(star:Vector2, en:Vector2):
-		print(star)
-		print(en)
 	#if star.distance_to(global_position) < 100 && lerptimer < 0:
 		#print(en)
 		#print(star)
@@ -261,20 +261,17 @@ func jump(star:Vector2, en:Vector2):
 			global_position = star
 			print("tried")
 			var postween := create_tween()
-			#postween.set_trans(Tween.TRANS_SINE)
 			postween.tween_property(self, "global_position",Vector2(star.x,en.y),.50)
 			await postween.finished
 			var postweenx := create_tween()
-			#postweenx.set_trans(Tween.TRANS_SINE)
 			postweenx.tween_property(self, "global_position",en,.25)
 		elif star.y < en.y :
-			if is_on_floor():
-				velocity.y -= 400
-				velocity.x += SPEED/4 * sign(en.x-star.x)
-			#var postweenx := create_tween()
-			#postweenx.set_trans(Tween.TRANS_SINE)
-			#postweenx.tween_property(self, "global_position",Vector2(en.x,star.y-20),.1)
-			#postween.set_trans(Tween.TRANS_SINE)
+			var startween = create_tween()
+			startween.tween_property(self, "global_position",star,.3)
+			var postweenx := create_tween()
+			postweenx.tween_property(self, "position",Vector2.RIGHT* (en.x-star.x),.3).as_relative()
+			await postweenx.finished
+			velocity.x = 0
 func set_idle():
 	cur = state.idle
 	
