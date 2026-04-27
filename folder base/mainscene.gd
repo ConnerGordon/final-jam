@@ -37,8 +37,3 @@ func spawnroom()->void:
 	add_child(loaded)
 	loaded.global_position = nextmappoint.global_position
 	nextmappoint.global_position = loaded.get_child(0).global_position
-	loaded.callspawn()
-	
-	
-	
-	
