@@ -3,7 +3,7 @@ extends TileMapLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	##callspawn()
+	callspawn()
 	pass
 
 
@@ -12,5 +12,5 @@ func _ready() -> void:
 	
 
 
-##func callspawn()->void:
-	
+func callspawn()->void:
+	pass

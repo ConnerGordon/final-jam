@@ -210,9 +210,12 @@ func _physics_process(delta: float) -> void:
 			
 			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
 				attacktimer.start()
+				groundedswordbox.visible = true
 				groundedswordbox.monitoring = true
 				if Input.is_action_pressed("lookup"):
+					upwardhitbox.visible = true
 					upwardhitbox.monitoring = true
+					
 				
 				
 			
@@ -231,10 +234,14 @@ func _physics_process(delta: float) -> void:
 				
 			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
 				attacktimer.start()
+				groundedswordbox.visible = true
 				groundedswordbox.monitoring = true
+				
 				if Input.is_action_pressed("lookup"):
+					upwardhitbox.visible = true
 					upwardhitbox.monitoring = true
 				elif Input.is_action_pressed("FALL"):
+					airhitbox.visible = true
 					airhitbox.monitoring = true
 			if dashtimer == dtb && Input.is_action_pressed("movementkeys") == false:
 				current = state.falling
@@ -293,3 +300,20 @@ func _on_attacktimer_timeout() -> void:
 	groundedswordbox.monitoring = false
 	airhitbox.monitoring= false
 	upwardhitbox.monitoring = false
+	groundedswordbox.visible = false
+	airhitbox.visible= false
+	upwardhitbox.visible = false
+
+
+func _swordboxentered(area: Area2D) -> void:
+	print(area.get_parent())
+	if area.get_parent().is_in_group("enemy"):
+		area.get_parent().var_health -=20
+		
+
+
+
+func _downairentered(area: Area2D) -> void:
+	if area.get_parent().is_in_group("enemy"):
+		area.get_parent().var_health -=20
+		velocity.y =-800

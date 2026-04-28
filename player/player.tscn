@@ -62,8 +62,10 @@ shape = SubResource("RectangleShape2D_i3pqv")
 zoom = Vector2(0.5, 0.5)
 
 [node name="groundedswordbox" type="Area2D" parent="." unique_id=1738176100]
+visible = false
 position = Vector2(0, -5.9604645e-08)
 scale = Vector2(0.99999994, 0.9999999)
+collision_mask = 2
 monitoring = false
 monitorable = false
 
@@ -85,6 +87,9 @@ wait_time = 0.35
 one_shot = true
 
 [node name="airhitbox" type="Area2D" parent="." unique_id=1257302519]
+visible = false
+collision_layer = 2
+collision_mask = 2
 monitoring = false
 monitorable = false
 
@@ -94,6 +99,9 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_g1dw6")
 
 [node name="upwardhitbox" type="Area2D" parent="." unique_id=243975332]
+visible = false
+collision_layer = 2
+collision_mask = 2
 monitoring = false
 monitorable = false
 
@@ -101,6 +109,9 @@ monitorable = false
 position = Vector2(0, -96)
 shape = SubResource("CapsuleShape2D_yw30f")
 
+[connection signal="area_entered" from="groundedswordbox" to="." method="_swordboxentered"]
 [connection signal="area_entered" from="bodydetec" to="." method="_on_bodydetec_area_entered"]
 [connection signal="body_entered" from="bodydetec" to="." method="_on_bodydetec_body_entered"]
 [connection signal="timeout" from="attacktimer" to="." method="_on_attacktimer_timeout"]
+[connection signal="area_entered" from="airhitbox" to="." method="_downairentered"]
+[connection signal="area_entered" from="upwardhitbox" to="." method="_swordboxentered"]

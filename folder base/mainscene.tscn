@@ -14,7 +14,7 @@ script = ExtResource("1_8yg2a")
 [node name="mapholder" type="Node2D" parent="." unique_id=314610917]
 
 [node name="CharacterBody2D" parent="." unique_id=103378180 instance=ExtResource("2_xwcau")]
-position = Vector2(-6175, 2825)
+position = Vector2(-5263, 2318)
 
 [node name="primemap" parent="." unique_id=1930176116 instance=ExtResource("3_kgh7c")]
 
@@ -22,7 +22,7 @@ position = Vector2(-6175, 2825)
 position = Vector2(3040, 0)
 
 [node name="enemybase" parent="." unique_id=658416861 instance=ExtResource("5_kvtpo")]
-position = Vector2(-6894, 3670)
+position = Vector2(-4991, 2741)
 
 [node name="gridmap2" parent="." unique_id=227575916 instance=ExtResource("6_ktlqv")]
-position = Vector2(-7924, 0)
+position = Vector2(-6400, 0)

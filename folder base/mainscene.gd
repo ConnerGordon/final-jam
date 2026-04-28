@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var nextmappoint: Marker2D = $nextmappoint
 @onready var character_body_2d: CharacterBody2D = $CharacterBody2D
+@onready var mapholder: Node2D = $mapholder
 
 
 var basehall1 : PackedScene = preload("res://folder base/basehall1.tscn")
@@ -23,17 +24,18 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("interact"):
-		spawnroom()
+		pass
 		
 		
 
 
+func intake(pos:Vector2,type:Variant,health:int):
+	pass
 
 
 func spawnroom()->void:
 	var preloadscene = roomarray[randf_range(0,3)]
 	var loaded = preloadscene.instantiate()
-	add_child(loaded)
+	mapholder.add_child(loaded)
 	loaded.global_position = nextmappoint.global_position
 	nextmappoint.global_position = loaded.get_child(0).global_position

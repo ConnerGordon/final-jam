@@ -15,27 +15,29 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8p8xu"]
-size = Vector2(127, 127)
+size = Vector2(81, 81)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nwalt"]
 size = Vector2(459, 474)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6b5m7"]
-size = Vector2(126, 127)
+size = Vector2(81, 79)
 
-[node name="enemybase" type="CharacterBody2D" unique_id=658416861]
+[node name="enemybase" type="CharacterBody2D" unique_id=658416861 groups=["enemy"]]
 top_level = true
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("1_0vvse")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1730415152]
-path_desired_distance = 240.0
-target_desired_distance = 240.0
+path_desired_distance = 50.0
+target_desired_distance = 80.0
 path_max_distance = 200.0
-navigation_layers = 7
+navigation_layers = 3
 path_postprocessing = 1
+simplify_path = true
 simplify_epsilon = 10.0
+path_return_max_length = 3000.0
 path_return_max_radius = 1500.0
 avoidance_enabled = true
 max_speed = 500.0
@@ -47,7 +49,7 @@ debug_path_custom_color = Color(0.11638088, 0.40457034, 2.8878452e-07, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1112094005]
 position = Vector2(-0.4999981, -2.9802322e-06)
-scale = Vector2(0.54273504, 0.53846157)
+scale = Vector2(0.34563252, 0.34291103)
 sprite_frames = SubResource("SpriteFrames_yjk2b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1876870390]
@@ -68,7 +70,24 @@ collision_mask = 7
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1088432644]
+position = Vector2(-0.5, 0.5)
 shape = SubResource("RectangleShape2D_6b5m7")
 
+[node name="wallscan" type="RayCast2D" parent="." unique_id=1496177478]
+position = Vector2(0, 38)
+scale = Vector2(2, 2)
+target_position = Vector2(26, 0)
+collision_mask = 4
+collide_with_areas = true
+
+[node name="wallscanback" type="RayCast2D" parent="." unique_id=704876007]
+position = Vector2(0, 38)
+scale = Vector2(2, 2)
+target_position = Vector2(-26.5, 0)
+collision_mask = 4
+collide_with_areas = true
+
+[connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="destination_reach"]
+[connection signal="waypoint_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_waypoint_reached"]
 [connection signal="area_entered" from="detecbox" to="." method="detected"]
