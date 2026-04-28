@@ -285,14 +285,16 @@ func _on_bodydetec_body_entered(body: Node2D) -> void:
 	
 	if body is TileMapLayer:
 		
-		var temphold = body.get_used_cells_by_id(0,Vector2i(4,3))
+		if get_tree().get_node_count_in_group("enemy") == 0:
+			
+			var temphold = body.get_used_cells_by_id(0,Vector2i(4,3))
 		#print(temphold[0])
 		
 		
-		for i in temphold:
+			for i in temphold:
 			
-			body.set_cell(i,-1,Vector2i(-1,-1),-1)
-		nextgen.emit()
+				body.set_cell(i,-1,Vector2i(-1,-1),-1)
+			nextgen.emit()
 
 
 func _on_attacktimer_timeout() -> void:
@@ -300,15 +302,17 @@ func _on_attacktimer_timeout() -> void:
 	groundedswordbox.monitoring = false
 	airhitbox.monitoring= false
 	upwardhitbox.monitoring = false
+	
 	groundedswordbox.visible = false
 	airhitbox.visible= false
 	upwardhitbox.visible = false
 
 
 func _swordboxentered(area: Area2D) -> void:
-	print(area.get_parent())
-	if area.get_parent().is_in_group("enemy"):
-		area.get_parent().var_health -=20
+	var g = area.get_parent()
+	if g.is_in_group("enemy"):
+		g.velocity.x += sign(g.global_position.x - global_position.x) * 600
+		g.var_health -=20
 		
 
 
@@ -316,4 +320,4 @@ func _swordboxentered(area: Area2D) -> void:
 func _downairentered(area: Area2D) -> void:
 	if area.get_parent().is_in_group("enemy"):
 		area.get_parent().var_health -=20
-		velocity.y =-800
+		velocity.y =-1200

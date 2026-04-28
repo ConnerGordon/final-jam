@@ -86,7 +86,8 @@ func _physics_process(delta: float) -> void:
 						
 						
 						var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
-						
+						if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0))== false):
+								safe = safe+ (Vector2(-1,0))
 						#print("rawsafe:  " + str(safe.y))
 						navigation_agent_2d.target_position = Vector2(int(safe.x) - int(safe.x)%80,int(safe.y)-int(safe.y)%80) + Vector2(40,40)
 						#print(navigation_agent_2d.target_position)
@@ -100,7 +101,7 @@ func _physics_process(delta: float) -> void:
 							
 							safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 							
-							
+							print(NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0)))
 							if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0))== false):
 								safe = safe+ (Vector2(-1,0))
 							
@@ -163,7 +164,8 @@ func _physics_process(delta: float) -> void:
 				
 				
 				if navigation_agent_2d.is_target_reachable() != true:
-					set_idle()
+					pass
+					#set_idle()
 				
 				
 				
@@ -285,7 +287,7 @@ func set_idle():
 
 
 func destination_reach() -> void:
-
+	print("reach")
 	set_idle()
 	if !found: 
 		idle_timer= randf_range(2,20)

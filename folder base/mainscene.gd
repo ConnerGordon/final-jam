@@ -36,6 +36,10 @@ func intake(pos:Vector2,type:Variant,health:int):
 func spawnroom()->void:
 	var preloadscene = roomarray[randf_range(0,3)]
 	var loaded = preloadscene.instantiate()
+	
 	mapholder.add_child(loaded)
 	loaded.global_position = nextmappoint.global_position
+	var temp = loaded.get_child(1).get_children()
+	for en in temp:
+		en.global_position += nextmappoint.global_position
 	nextmappoint.global_position = loaded.get_child(0).global_position
