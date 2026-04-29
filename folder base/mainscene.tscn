@@ -9,7 +9,7 @@ script = ExtResource("1_8yg2a")
 
 [node name="enemyholder" type="Node2D" parent="." unique_id=1068538532]
 
-[node name="mapholder" type="Node2D" parent="." unique_id=314610917]
+[node name="mapholder" type="Node2D" parent="." unique_id=314610917 groups=["tileholder"]]
 
 [node name="CharacterBody2D" parent="." unique_id=103378180 instance=ExtResource("2_xwcau")]
 position = Vector2(330, -140)

@@ -29,8 +29,7 @@ func _process(delta: float) -> void:
 		
 
 
-func intake(pos:Vector2,type:Variant,health:int):
-	pass
+
 
 
 func spawnroom()->void:

@@ -23,6 +23,7 @@ spawnscript="*uid://tofqe1wgrnvd"
 
 player=""
 enemy=""
+enemygroup=""
 
 [input]
 
