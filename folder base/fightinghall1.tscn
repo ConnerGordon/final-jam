@@ -1,7 +1,12 @@
 [gd_scene format=4 uid="uid://doanm8euugmp1"]
 
 [ext_resource type="Texture2D" uid="uid://bxltkvxs865r0" path="res://newimports/placeholder mapping.jpg" id="1_vcg2u"]
-[ext_resource type="PackedScene" uid="uid://bhy61r18tgkv" path="res://enemy/husk.tscn" id="2_7funh"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_axciu"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1fp7y"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -144,6 +149,8 @@ use_texture_padding = false
 3:5/0 = 0
 4:5/0 = 0
 5:5/0 = 0
+5:5/0/terrain_set = 0
+5:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_axciu")
 6:5/0 = 0
 6:5/0/terrain_set = 0
 6:5/0/terrain = 0
@@ -197,24 +204,6 @@ tile_set = SubResource("TileSet_7funh")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=764642711]
 position = Vector2(816, 0)
-
-[node name="temphold" type="Node2D" parent="." unique_id=171720263]
-scale = Vector2(0.99999994, 0.99999994)
-
-[node name="enemybase6" parent="temphold" unique_id=658416861 instance=ExtResource("2_7funh")]
-position = Vector2(1411, -53)
-
-[node name="enemybase7" parent="temphold" unique_id=697601431 instance=ExtResource("2_7funh")]
-position = Vector2(1859, -674)
-
-[node name="enemybase8" parent="temphold" unique_id=1496008050 instance=ExtResource("2_7funh")]
-position = Vector2(3322, -692)
-
-[node name="enemybase9" parent="temphold" unique_id=922386347 instance=ExtResource("2_7funh")]
-position = Vector2(697, -710)
-
-[node name="enemybase10" parent="temphold" unique_id=1730711493 instance=ExtResource("2_7funh")]
-position = Vector2(2881, -48)
 
 [node name="NavigationLink2D" type="NavigationLink2D" parent="." unique_id=95997866]
 position = Vector2(60.999996, -10.999999)

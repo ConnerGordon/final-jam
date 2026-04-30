@@ -39,11 +39,13 @@ position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_8p8xu")
 
 [node name="detecbox" type="Area2D" parent="." unique_id=1241152469]
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detecbox" unique_id=945585681]
 position = Vector2(0.5, 1)
 shape = SubResource("RectangleShape2D_nwalt")
+disabled = true
 
 [node name="hurtbox" type="Area2D" parent="." unique_id=543940087]
 monitoring = false

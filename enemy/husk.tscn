@@ -39,10 +39,11 @@ simplify_path = true
 simplify_epsilon = 10.0
 path_return_max_length = 3000.0
 path_return_max_radius = 1500.0
-avoidance_enabled = true
-max_speed = 500.0
+max_speed = 10000.0
 avoidance_layers = 2
 avoidance_mask = 14
+avoidance_priority = 0.5
+debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.11638088, 0.40457034, 2.8878452e-07, 1)
 
@@ -57,6 +58,7 @@ shape = SubResource("RectangleShape2D_8p8xu")
 [node name="detecbox" type="Area2D" parent="." unique_id=1241152469]
 collision_layer = 2
 collision_mask = 8
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detecbox" unique_id=945585681]
@@ -85,7 +87,12 @@ target_position = Vector2(-26.5, 0)
 collision_mask = 4
 collide_with_areas = true
 
+[node name="holdingtimer" type="Timer" parent="." unique_id=1013878943]
+wait_time = 1.5
+one_shot = true
+
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="destination_reach"]
 [connection signal="waypoint_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_waypoint_reached"]
 [connection signal="area_entered" from="detecbox" to="." method="detected"]
+[connection signal="timeout" from="holdingtimer" to="." method="_on_holdingtimer_timeout"]

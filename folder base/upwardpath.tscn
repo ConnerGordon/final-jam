@@ -1,7 +1,12 @@
 [gd_scene format=4 uid="uid://qkgbroyhb74m"]
 
 [ext_resource type="Texture2D" uid="uid://bxltkvxs865r0" path="res://newimports/placeholder mapping.jpg" id="1_e2jn1"]
-[ext_resource type="PackedScene" uid="uid://bhy61r18tgkv" path="res://enemy/husk.tscn" id="2_j1kwv"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_axciu"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1fp7y"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -144,6 +149,8 @@ use_texture_padding = false
 3:5/0 = 0
 4:5/0 = 0
 5:5/0 = 0
+5:5/0/terrain_set = 0
+5:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_axciu")
 6:5/0 = 0
 6:5/0/terrain_set = 0
 6:5/0/terrain = 0
@@ -198,30 +205,6 @@ tile_set = SubResource("TileSet_j1kwv")
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1757893291]
 position = Vector2(480, -528)
 
-[node name="temphold" type="Node2D" parent="." unique_id=327397757]
-scale = Vector2(0.99999994, 0.99999994)
-
-[node name="enemybase6" parent="temphold" unique_id=658416861 instance=ExtResource("2_j1kwv")]
-position = Vector2(1337, -774)
-
-[node name="enemybase7" parent="temphold" unique_id=1687703900 instance=ExtResource("2_j1kwv")]
-position = Vector2(1834, -1340)
-
-[node name="enemybase8" parent="temphold" unique_id=1305216627 instance=ExtResource("2_j1kwv")]
-position = Vector2(653, -1659)
-
-[node name="enemybase9" parent="temphold" unique_id=741555760 instance=ExtResource("2_j1kwv")]
-position = Vector2(1721, -2067)
-
-[node name="enemybase10" parent="temphold" unique_id=1816791105 instance=ExtResource("2_j1kwv")]
-position = Vector2(924, -2463)
-
-[node name="enemybase11" parent="temphold" unique_id=2134598603 instance=ExtResource("2_j1kwv")]
-position = Vector2(791, -538)
-
-[node name="enemybase12" parent="temphold" unique_id=944815067 instance=ExtResource("2_j1kwv")]
-position = Vector2(1960, -41)
-
 [node name="NavigationLink2D" type="NavigationLink2D" parent="." unique_id=1510201852]
 position = Vector2(87.799995, -13.599999)
 start_position = Vector2(28.600006, -95.99999)
@@ -245,7 +228,7 @@ end_position = Vector2(-5, 0.99998474)
 
 [node name="NavigationLink2D10" type="NavigationLink2D" parent="." unique_id=1069036857]
 position = Vector2(239.6, -239.8)
-start_position = Vector2(-45.199997, -26.600006)
+start_position = Vector2(-45.2, -25.4)
 end_position = Vector2(5.399994, -25.399994)
 
 [node name="NavigationLink2D11" type="NavigationLink2D" parent="." unique_id=2021659486]
@@ -265,7 +248,7 @@ end_position = Vector2(5.399994, -25.399994)
 
 [node name="NavigationLink2D14" type="NavigationLink2D" parent="." unique_id=1618537049]
 position = Vector2(283, -176.8)
-start_position = Vector2(23.600006, -87.399994)
+start_position = Vector2(23.6, -88)
 end_position = Vector2(-15, -88)
 
 [node name="NavigationLink2D15" type="NavigationLink2D" parent="." unique_id=1051591877]
@@ -289,7 +272,7 @@ start_position = Vector2(-15.399963, -85.599976)
 end_position = Vector2(46.399994, -117.60004)
 
 [node name="NavigationLink2D3" type="NavigationLink2D" parent="." unique_id=1807730063]
-position = Vector2(319.8, -12)
+position = Vector2(319.8, -10.799999)
 start_position = Vector2(-18.600006, -45.199997)
 
 [node name="NavigationLink2D4" type="NavigationLink2D" parent="." unique_id=452382676]

@@ -5,7 +5,8 @@ const SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var backnav: NavigationAgent2D = $backnav
+
+@onready var holdingtimer: Timer = $holdingtimer
 
 var navigtimer := 10.0
 
@@ -67,8 +68,10 @@ func _physics_process(delta: float) -> void:
 		playerpos = get_tree().get_first_node_in_group("player").global_position
 	
 	
-	
-	
+	if is_on_floor():
+		if holdingtimer.time_left < holdingtimer.wait_time/2:
+			holdingtimer.stop()
+			holdingtimer.timeout.emit()
 	if pathhold == false:
 		match cur:
 			
@@ -83,30 +86,28 @@ func _physics_process(delta: float) -> void:
 						
 						var nav_map = navigation_agent_2d.get_navigation_map()
 						var target = NavigationServer2D.map_get_random_point(nav_map,1,false)
-						
-						
 						var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
-						if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0))== false):
-								safe = safe+ (Vector2(-1,0))
-						#print("rawsafe:  " + str(safe.y))
-						navigation_agent_2d.target_position = Vector2(int(safe.x) - int(safe.x)%80,int(safe.y)-int(safe.y)%80) + Vector2(40,40)
-						#print(navigation_agent_2d.target_position)
-						#print("rounded amount:  "+ str(int(safe.y)%80))
-						#print("total amount:   "+ str(int(safe.y) - int(safe.y)%80))
+						if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(20,0))== false):
+								print(safe)
+								safe = safe+ (Vector2(-20,0))
+								print(safe)
 						
-						while (safe.distance_to(global_position) < 500 && found == false):
-							
-							nav_map = navigation_agent_2d.get_navigation_map()
-							target = NavigationServer2D.map_get_random_point(nav_map,1,false)
-							
-							safe = NavigationServer2D.map_get_closest_point(nav_map,target)
-							
-							print(NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0)))
-							if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0))== false):
-								safe = safe+ (Vector2(-1,0))
-							
-							navigation_agent_2d.target_position = Vector2(int(safe.x) - int(safe.x)%80,int(safe.y)-int(safe.y)%80) + Vector2(40,40)
-							
+						navigation_agent_2d.target_position = (Vector2(int(safe.x) - int(safe.x)%80,int(safe.y)-int(safe.y)%80) + Vector2(40,sign(safe.y)*40))
+						print(navigation_agent_2d.target_position)
+						
+						#while (safe.distance_to(global_position) < 500 && found == false):
+							#
+							#nav_map = navigation_agent_2d.get_navigation_map()
+							#target = NavigationServer2D.map_get_random_point(nav_map,1,false)
+							#
+							#safe = NavigationServer2D.map_get_closest_point(nav_map,target)
+							#
+							##print(NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0)))
+							#if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(20,0))== false):
+								#safe = safe+ (Vector2(-20,0))
+							#
+							#navigation_agent_2d.target_position = Vector2(int(safe.x) - int(safe.x)%80,int(safe.y)-int(safe.y)%80) + Vector2(40,40)
+							#
 						while NavigationServer2D.region_owns_point(nav_map,navigation_agent_2d.target_position + Vector2(0,80)):
 							navigation_agent_2d.target_position= navigation_agent_2d.target_position +Vector2(0,80)
 					else:
@@ -115,8 +116,8 @@ func _physics_process(delta: float) -> void:
 						
 						var nav_map = navigation_agent_2d.get_navigation_map()
 						var target = NavigationServer2D.map_get_closest_point(nav_map,playerpos)
-						if (NavigationServer2D.region_owns_point(nav_map,target+Vector2(1,0))== false):
-								target = target+ (Vector2(-1,0))
+						if (NavigationServer2D.region_owns_point(nav_map,target+Vector2(20,0))== false):
+								target = target+ (Vector2(-20,0))
 						var safe = Vector2(int(target.x) - int(target.x)%80,int(target.y)-int(target.y)%80) + Vector2(40,40)
 						
 						
@@ -124,7 +125,7 @@ func _physics_process(delta: float) -> void:
 						
 							
 					
-					
+					print(navigation_agent_2d.target_position)
 					if found:
 						cur = state.finding
 					else:
@@ -133,7 +134,10 @@ func _physics_process(delta: float) -> void:
 
 			
 			state.wandering:
-				navigation_agent_2d.target_position = navigation_agent_2d.target_position
+				if is_on_floor():
+					navigation_agent_2d.target_position = navigation_agent_2d.target_position
+				if int(navigation_agent_2d.target_position.y) % 80 == 0:
+					print(navigation_agent_2d.target_position)
 				var current_pos = global_transform.origin
 				var next_position = navigation_agent_2d.get_next_path_position()
 				
@@ -141,7 +145,7 @@ func _physics_process(delta: float) -> void:
 				if is_on_floor():
 					
 					if pathrecall:
-						print("calledquerey")
+						#print("calledquerey")
 						
 						
 						pathrecall = false
@@ -200,6 +204,7 @@ func _physics_process(delta: float) -> void:
 						velocity.x = sign(direc.x) * SPEED * 2
 						
 					if wallscan.is_colliding() || wallscanback.is_colliding():
+						wallcrawl = true
 						if direc.y < -0.66:
 							velocity.y = -500
 							
@@ -254,7 +259,7 @@ func jump(star:Vector2, en:Vector2):
 		
 		pathhold = true
 		if star.y > en.y:
-			print("UP  on navigationlink")
+			#print("UP  on navigationlink")
 			global_position = star
 			
 			var postween := create_tween()
@@ -264,15 +269,16 @@ func jump(star:Vector2, en:Vector2):
 			postweenx.tween_property(self, "global_position",en,.25)
 			pathhold = false
 		elif star.y < en.y :
-			print("Down  on navigationlink")
+			#print("Down  on navigationlink")
 			var startween = create_tween()
 			startween.tween_property(self, "global_position",star,.3)
-			var postweenx := create_tween()
-			postweenx.tween_property(self, "position",Vector2.RIGHT* sign(en.x-star.x)*80,.3).as_relative()
-			await postweenx.finished
+			await startween.finished
+			#var postweenx := create_tween()
+			#postweenx.tween_property(self, "position",Vector2.RIGHT* sign(en.x-star.x)*80,.3).as_relative()
+			#await postweenx.finished
 			
 			
-			pathhold = false
+			holdingtimer.start()
 			pathrecall = true
 		else:
 			var postweenx = create_tween()
@@ -280,14 +286,14 @@ func jump(star:Vector2, en:Vector2):
 			await postweenx.finished
 			pathhold = false
 			pathrecall = true
-		pathhold = false
+		
 func set_idle():
 	cur = state.idle
 	
 
 
 func destination_reach() -> void:
-	print("reach")
+	#print("reach")
 	set_idle()
 	if !found: 
 		idle_timer= randf_range(2,20)
@@ -317,3 +323,7 @@ func _on_navigation_agent_2d_waypoint_reached(details: Dictionary) -> void:
 	#print(details["type"])
 	#print(navigation_agent_2d.distance_to_target())
 	pass
+
+
+func _on_holdingtimer_timeout() -> void:
+	pathhold = false

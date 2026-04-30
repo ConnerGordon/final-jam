@@ -1,7 +1,12 @@
 [gd_scene format=4 uid="uid://5ihu4cisx2o0"]
 
 [ext_resource type="Texture2D" uid="uid://bxltkvxs865r0" path="res://newimports/placeholder mapping.jpg" id="1_1fp7y"]
-[ext_resource type="PackedScene" uid="uid://bhy61r18tgkv" path="res://enemy/husk.tscn" id="2_jv63m"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_axciu"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1fp7y"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -144,6 +149,8 @@ use_texture_padding = false
 3:5/0 = 0
 4:5/0 = 0
 5:5/0 = 0
+5:5/0/terrain_set = 0
+5:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_axciu")
 6:5/0 = 0
 6:5/0/terrain_set = 0
 6:5/0/terrain = 0
@@ -197,27 +204,6 @@ tile_set = SubResource("TileSet_sqabm")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1452666324]
 position = Vector2(608, 880)
-
-[node name="temphold" type="Node2D" parent="." unique_id=76549979]
-scale = Vector2(0.99999994, 0.99999994)
-
-[node name="enemybase" parent="temphold" unique_id=658416861 instance=ExtResource("2_jv63m")]
-position = Vector2(2073, 1047)
-
-[node name="enemybase2" parent="temphold" unique_id=2123299994 instance=ExtResource("2_jv63m")]
-position = Vector2(1450, 2034)
-
-[node name="enemybase3" parent="temphold" unique_id=1384301313 instance=ExtResource("2_jv63m")]
-position = Vector2(654, 1069)
-
-[node name="enemybase4" parent="temphold" unique_id=1910010562 instance=ExtResource("2_jv63m")]
-position = Vector2(588, 3720)
-
-[node name="enemybase5" parent="temphold" unique_id=419984072 instance=ExtResource("2_jv63m")]
-position = Vector2(2416, 4352)
-
-[node name="enemybase6" parent="temphold" unique_id=1161179857 instance=ExtResource("2_jv63m")]
-position = Vector2(2113, -123)
 
 [node name="NavigationLink2D" type="NavigationLink2D" parent="." unique_id=786904234]
 position = Vector2(46.600002, 864.19995)
