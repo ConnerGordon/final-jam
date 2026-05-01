@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://drwwmupaj2lyr" path="res://player/householder.jpg" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://dj3816n7wsl56" path="res://player/player.gd" id="1_rkbax"]
+[ext_resource type="Texture2D" uid="uid://cfnk6qb21nmkj" path="res://newimports/slashstock.png" id="3_g1dw6"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_onrkg"]
 animations = [{
@@ -26,6 +27,61 @@ size = Vector2(156, 178)
 radius = 50.000008
 height = 128.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1dw6"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(52, 0, 283, 204)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yw30f"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(672, 0, 283, 204)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjkh3"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(1292, 0, 283, 204)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6k8r"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(1912, 0, 283, 204)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_boad6"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(2532, 0, 283, 204)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgyib"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(3152, 0, 283, 204)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hg6s5"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1dw6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yw30f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjkh3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6k8r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_boad6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgyib")
+}],
+"loop": false,
+"name": &"slash",
+"speed": 5.0
+}]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g1dw6"]
 radius = 40.0
 height = 128.0
@@ -33,6 +89,47 @@ height = 128.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yw30f"]
 radius = 68.0
 height = 136.0
+
+[sub_resource type="Animation" id="Animation_g1dw6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("groundedswordbox/swinglo:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="Animation" id="Animation_yw30f"]
+resource_name = "defaultswing"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("groundedswordbox/swinglo:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_8t03j"]
+resource_name = "upswing"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2ieo8"]
+_data = {
+&"RESET": SubResource("Animation_g1dw6"),
+&"defaultswing": SubResource("Animation_yw30f"),
+&"upswing": SubResource("Animation_8t03j")
+}
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=103378180 groups=["player"]]
 top_level = true
@@ -62,7 +159,6 @@ shape = SubResource("RectangleShape2D_i3pqv")
 zoom = Vector2(0.5, 0.5)
 
 [node name="groundedswordbox" type="Area2D" parent="." unique_id=1738176100]
-visible = false
 position = Vector2(0, -5.9604645e-08)
 scale = Vector2(0.99999994, 0.9999999)
 collision_mask = 2
@@ -73,6 +169,13 @@ monitorable = false
 position = Vector2(-6.750156e-14, -16.000002)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_rkbax")
+
+[node name="swinglo" type="AnimatedSprite2D" parent="groundedswordbox" unique_id=1012268504]
+position = Vector2(0, -17)
+scale = Vector2(0.77016157, 1.0000001)
+sprite_frames = SubResource("SpriteFrames_hg6s5")
+animation = &"slash"
+frame = 5
 
 [node name="bodydetec" type="Area2D" parent="." unique_id=360210077]
 scale = Vector2(1.1200004, 1)
@@ -109,6 +212,9 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="upwardhitbox" unique_id=198316899]
 position = Vector2(0, -96)
 shape = SubResource("CapsuleShape2D_yw30f")
+
+[node name="anim" type="AnimationPlayer" parent="." unique_id=1217430340]
+libraries/ = SubResource("AnimationLibrary_2ieo8")
 
 [connection signal="area_entered" from="groundedswordbox" to="." method="_swordboxentered"]
 [connection signal="area_entered" from="bodydetec" to="." method="_on_bodydetec_area_entered"]

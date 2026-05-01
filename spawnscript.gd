@@ -4,7 +4,7 @@ extends Node
 @onready var g = preload("res://enemy/husk.tscn")
 
 
-var Totalpoints = 1#randi_range(7,10)
+var Totalpoints = randi_range(7,10)
 
 var basicpoints = 5
 

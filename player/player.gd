@@ -10,6 +10,7 @@ class_name Player
 
 @onready var upwardhitbox: Area2D = $upwardhitbox
 
+@onready var swinglo: AnimatedSprite2D = $groundedswordbox/swinglo
 
 
 var var_health : float :
@@ -48,6 +49,7 @@ var coyotetimer := coytimedef
 @onready var wallleft: RayCast2D = $wallleft
 
 
+@onready var anim: AnimationPlayer = $anim
 
 
 var prevdir := 1.0
@@ -99,8 +101,10 @@ func _physics_process(delta: float) -> void:
 		state.moving:
 			if direction == -1:
 				animated_sprite_2d.flip_h = 1
+				swinglo.flip_h = 1
 			elif direction == 1:
 				animated_sprite_2d.flip_h = 0
+				swinglo.flip_h = 0
 			velocity.x = direction * SPEED
 			if direction != 0.0:
 				prevdir = direction
@@ -210,12 +214,15 @@ func _physics_process(delta: float) -> void:
 			
 			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
 				attacktimer.start()
-				groundedswordbox.visible = true
-				groundedswordbox.monitoring = true
 				if Input.is_action_pressed("lookup"):
 					upwardhitbox.visible = true
 					upwardhitbox.monitoring = true
+				else:
+					groundedswordbox.visible = true
+					groundedswordbox.monitoring = true
+					anim.play("defaultswing")
 					
+				
 				
 				
 			

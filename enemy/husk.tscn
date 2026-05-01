@@ -88,7 +88,7 @@ collision_mask = 4
 collide_with_areas = true
 
 [node name="holdingtimer" type="Timer" parent="." unique_id=1013878943]
-wait_time = 1.5
+wait_time = 3.0
 one_shot = true
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]

@@ -67,9 +67,9 @@ func _physics_process(delta: float) -> void:
 	if get_tree().get_first_node_in_group("player") != null:
 		playerpos = get_tree().get_first_node_in_group("player").global_position
 	
-	
+	print(holdingtimer.time_left)
 	if is_on_floor():
-		if holdingtimer.time_left < holdingtimer.wait_time/2:
+		if holdingtimer.time_left < holdingtimer.wait_time/2 && holdingtimer.is_stopped() == false:
 			holdingtimer.stop()
 			holdingtimer.timeout.emit()
 	if pathhold == false:
@@ -136,8 +136,7 @@ func _physics_process(delta: float) -> void:
 			state.wandering:
 				if is_on_floor():
 					navigation_agent_2d.target_position = navigation_agent_2d.target_position
-				if int(navigation_agent_2d.target_position.y) % 80 == 0:
-					print(navigation_agent_2d.target_position)
+				
 				var current_pos = global_transform.origin
 				var next_position = navigation_agent_2d.get_next_path_position()
 				
@@ -255,7 +254,7 @@ func _physics_process(delta: float) -> void:
 
 func jump(star:Vector2, en:Vector2):
 	
-	if pathhold == false && global_position.distance_to(star) < 50:
+	if pathhold == false && global_position.distance_to(star) < 50 && holdingtimer.is_stopped():
 		
 		pathhold = true
 		if star.y > en.y:
@@ -271,13 +270,14 @@ func jump(star:Vector2, en:Vector2):
 		elif star.y < en.y :
 			#print("Down  on navigationlink")
 			var startween = create_tween()
-			startween.tween_property(self, "global_position",star,.3)
+			startween.tween_property(self, "global_position",star,.2)
+			
 			await startween.finished
 			#var postweenx := create_tween()
 			#postweenx.tween_property(self, "position",Vector2.RIGHT* sign(en.x-star.x)*80,.3).as_relative()
 			#await postweenx.finished
-			
-			
+			velocity.x = 400 *sign(en.x - star.x)
+			velocity.y -= 400
 			holdingtimer.start()
 			pathrecall = true
 		else:
@@ -326,4 +326,5 @@ func _on_navigation_agent_2d_waypoint_reached(details: Dictionary) -> void:
 
 
 func _on_holdingtimer_timeout() -> void:
+	#print("time") 
 	pathhold = false
