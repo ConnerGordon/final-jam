@@ -67,7 +67,7 @@ func _physics_process(delta: float) -> void:
 	if get_tree().get_first_node_in_group("player") != null:
 		playerpos = get_tree().get_first_node_in_group("player").global_position
 	
-	print(holdingtimer.time_left)
+	
 	if is_on_floor():
 		if holdingtimer.time_left < holdingtimer.wait_time/2 && holdingtimer.is_stopped() == false:
 			holdingtimer.stop()
@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 			
 			state.idle:
 				if is_on_floor():
-					
+					print("zeroed")
 					velocity = Vector2(0,0)
 				idle_timer -= delta*10
 				if idle_timer <= 0:
@@ -88,12 +88,12 @@ func _physics_process(delta: float) -> void:
 						var target = NavigationServer2D.map_get_random_point(nav_map,1,false)
 						var safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 						if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(20,0))== false):
-								print(safe)
+								#print(safe)
 								safe = safe+ (Vector2(-20,0))
-								print(safe)
+								#print(safe)
 						
 						navigation_agent_2d.target_position = (Vector2(int(safe.x) - int(safe.x)%80,int(safe.y)-int(safe.y)%80) + Vector2(40,sign(safe.y)*40))
-						print(navigation_agent_2d.target_position)
+						#print(navigation_agent_2d.target_position)
 						
 						#while (safe.distance_to(global_position) < 500 && found == false):
 							#
@@ -125,7 +125,8 @@ func _physics_process(delta: float) -> void:
 						
 							
 					
-					print(navigation_agent_2d.target_position)
+					#print(navigation_agent_2d.target_position)
+					print(navigation_agent_2d.get_path_length())
 					if found:
 						cur = state.finding
 					else:
@@ -246,7 +247,7 @@ func _physics_process(delta: float) -> void:
 			postimer = 40.0
 			if found:
 				postimer = 20.0
-		move_and_slide()
+	move_and_slide()
 	
 	if wallscan.is_colliding() == false && wallscanback.is_colliding() == false:
 		wallcrawl = false
@@ -269,23 +270,21 @@ func jump(star:Vector2, en:Vector2):
 			pathhold = false
 		elif star.y < en.y :
 			#print("Down  on navigationlink")
-			var startween = create_tween()
-			startween.tween_property(self, "global_position",star,.2)
+			#var startween = create_tween()
+			#startween.tween_property(self, "global_position",star,.1)
 			
-			await startween.finished
+			#await startween.finished
 			#var postweenx := create_tween()
 			#postweenx.tween_property(self, "position",Vector2.RIGHT* sign(en.x-star.x)*80,.3).as_relative()
 			#await postweenx.finished
 			velocity.x = 400 *sign(en.x - star.x)
 			velocity.y -= 400
 			holdingtimer.start()
-			pathrecall = true
 		else:
 			var postweenx = create_tween()
 			postweenx.tween_property(self, "position",Vector2.RIGHT* (en.x-star.x),.3).as_relative()
 			await postweenx.finished
 			pathhold = false
-			pathrecall = true
 		
 func set_idle():
 	cur = state.idle

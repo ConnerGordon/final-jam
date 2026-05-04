@@ -38,9 +38,10 @@ var aircurrent: airbornstate = airbornstate.falling
 var dashtimer := 20.0
 var dtb:= dashtimer
 var airdash := true
-var coytimedef:= 2.0
+var coytimedef:= .2
 var coyotetimer := coytimedef
 
+var canjump = true
 
 
 
@@ -75,6 +76,9 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		coyotetimer -= delta
+		#print(coyotetimer)
+		if coyotetimer < 0:
+			canjump= false
 		if Input.is_action_pressed("jump"):
 			grav = 980/1.5
 		elif Input.is_action_pressed("FALL"):
@@ -93,6 +97,9 @@ func _physics_process(delta: float) -> void:
 		coyotetimer = coytimedef
 		airdash = true
 		aircurrent = airbornstate.grounded 
+	
+	if is_on_floor() || is_on_wall():
+		canjump = true
 	
 	
 	
@@ -129,14 +136,9 @@ func _physics_process(delta: float) -> void:
 					current= state.idle
 				dashtimer = dtb
 		state.jumping:
-			#print("jump")
 			aircurrent = airbornstate.falling
-			if is_on_floor():
+			if is_on_floor() || canjump:
 				velocity.y = -JUMP_VELOCITY
-			#if is_on_wall_only():
-				#airdash = true
-				#dashtimer = dtb
-				#velocity.y = -JUMP_VELOCITY/1.5
 			if wallright.is_colliding() && (is_on_floor() == false):
 				airdash = true
 				dashtimer = dtb
@@ -151,6 +153,7 @@ func _physics_process(delta: float) -> void:
 				velocity.x = SPEED*2
 			if velocity.y < 0:
 				current = state.falling
+			canjump= false
 		state.dashattacking:
 			groundedswordbox.monitoring = true
 			
@@ -206,6 +209,7 @@ func _physics_process(delta: float) -> void:
 				
 				
 				
+				
 			if Input.is_action_pressed("movementkeys") == false:
 				
 				current = state.idle
@@ -236,8 +240,21 @@ func _physics_process(delta: float) -> void:
 					current = state.dashing
 					airdash= !airdash
 			if Input.is_action_just_pressed("jump") && is_on_wall_only():
+				
 				JUMP_VELOCITY = jumpdefault
 				current = state.jumping
+					
+			elif Input.is_action_just_pressed("jump"):
+				if canjump:
+					if current == state.dashing:
+						if JUMP_VELOCITY > jumpdefault/4:
+							JUMP_VELOCITY = JUMP_VELOCITY/1.5
+					else: 
+						JUMP_VELOCITY = jumpdefault
+					current = state.jumping
+					aircurrent = airbornstate.falling
+					dashtimer = dtb
+					
 				
 			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
 				attacktimer.start()
@@ -305,7 +322,6 @@ func _on_bodydetec_body_entered(body: Node2D) -> void:
 
 
 func _on_attacktimer_timeout() -> void:
-	print("pcalled")
 	groundedswordbox.monitoring = false
 	airhitbox.monitoring= false
 	upwardhitbox.monitoring = false

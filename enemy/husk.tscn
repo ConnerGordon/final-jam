@@ -15,13 +15,16 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8p8xu"]
-size = Vector2(81, 81)
+size = Vector2(80, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nwalt"]
 size = Vector2(459, 474)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6b5m7"]
 size = Vector2(81, 79)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0vvse"]
+radius = 1200.0
 
 [node name="enemybase" type="CharacterBody2D" unique_id=658416861 groups=["enemy"]]
 top_level = true
@@ -38,7 +41,7 @@ path_postprocessing = 1
 simplify_path = true
 simplify_epsilon = 10.0
 path_return_max_length = 3000.0
-path_return_max_radius = 1500.0
+path_return_max_radius = 1200.0
 max_speed = 10000.0
 avoidance_layers = 2
 avoidance_mask = 14
@@ -88,8 +91,16 @@ collision_mask = 4
 collide_with_areas = true
 
 [node name="holdingtimer" type="Timer" parent="." unique_id=1013878943]
-wait_time = 3.0
+wait_time = 2.0
 one_shot = true
+
+[node name="test" type="Area2D" parent="." unique_id=1773564811]
+visible = false
+monitoring = false
+monitorable = false
+
+[node name="MeshInstance2D" type="CollisionShape2D" parent="test" unique_id=2035555589]
+shape = SubResource("CircleShape2D_0vvse")
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="destination_reach"]
