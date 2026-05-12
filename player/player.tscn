@@ -160,7 +160,6 @@ zoom = Vector2(0.5, 0.5)
 
 [node name="groundedswordbox" type="Area2D" parent="." unique_id=1738176100]
 position = Vector2(0, -5.9604645e-08)
-scale = Vector2(0.99999994, 0.9999999)
 collision_mask = 2
 monitoring = false
 monitorable = false
@@ -172,7 +171,7 @@ shape = SubResource("CapsuleShape2D_rkbax")
 
 [node name="swinglo" type="AnimatedSprite2D" parent="groundedswordbox" unique_id=1012268504]
 position = Vector2(0, -17)
-scale = Vector2(0.77016157, 1.0000001)
+scale = Vector2(0.7, 0.909)
 sprite_frames = SubResource("SpriteFrames_hg6s5")
 animation = &"slash"
 frame = 5

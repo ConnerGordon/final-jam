@@ -102,7 +102,7 @@ func _physics_process(delta: float) -> void:
 							#
 							#safe = NavigationServer2D.map_get_closest_point(nav_map,target)
 							#
-							##print(NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0)))
+							#print(NavigationServer2D.region_owns_point(nav_map,safe+Vector2(1,0)))
 							#if (NavigationServer2D.region_owns_point(nav_map,safe+Vector2(20,0))== false):
 								#safe = safe+ (Vector2(-20,0))
 							#
