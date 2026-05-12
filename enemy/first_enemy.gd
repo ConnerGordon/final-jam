@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 			
 			state.idle:
 				if is_on_floor():
-					print("zeroed")
+					#print("zeroed")
 					velocity = Vector2(0,0)
 				idle_timer -= delta*10
 				if idle_timer <= 0:
@@ -126,7 +126,7 @@ func _physics_process(delta: float) -> void:
 							
 					
 					#print(navigation_agent_2d.target_position)
-					print(navigation_agent_2d.get_path_length())
+					#print(navigation_agent_2d.get_path_length())
 					if found:
 						cur = state.finding
 					else:
