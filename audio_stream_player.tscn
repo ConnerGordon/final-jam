@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bydbqvjg5lbuo"]
+
+[ext_resource type="AudioStream" uid="uid://evkhw8guj8s7" path="res://newimports/sword_sfx.wav" id="1_g84o6"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" unique_id=30865426]
+stream = ExtResource("1_g84o6")

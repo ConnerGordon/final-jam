@@ -7,6 +7,8 @@ const JUMP_VELOCITY = -400.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 @onready var holdingtimer: Timer = $holdingtimer
+# reference the hurt animation player
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var navigtimer := 10.0
 

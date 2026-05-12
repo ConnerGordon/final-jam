@@ -218,6 +218,8 @@ func _physics_process(delta: float) -> void:
 			
 			if Input.is_action_just_pressed("swing") && attacktimer.is_stopped():
 				attacktimer.start()
+				# MAKES THE SWORD SOUND WHEN YOU SWING
+				audio_stream_player.play()
 				if Input.is_action_pressed("lookup"):
 					upwardhitbox.visible = true
 					upwardhitbox.monitoring = true
@@ -233,6 +235,8 @@ func _physics_process(delta: float) -> void:
 			if dashtimer > dtb/20:
 				if Input.is_action_just_pressed("swing") && aircurrent == airbornstate.grounded:
 					current = state.dashattacking
+					# MAKES THE SWORD SOUND WHEN YOU SWING
+					audio_stream_player.play()
 			
 		airbornstate.falling:
 			if Input.is_action_just_pressed("dash"):
@@ -260,6 +264,8 @@ func _physics_process(delta: float) -> void:
 				attacktimer.start()
 				groundedswordbox.visible = true
 				groundedswordbox.monitoring = true
+				# MAKES THE SWORD SOUND WHEN YOU SWING
+				audio_stream_player.play()
 				
 				if Input.is_action_pressed("lookup"):
 					upwardhitbox.visible = true
@@ -336,7 +342,7 @@ func _swordboxentered(area: Area2D) -> void:
 	if g.is_in_group("enemy"):
 		g.velocity.x += sign(g.global_position.x - global_position.x) * 600
 		g.var_health -=20
-		
+		g.animation_player.play("hurt") # plays the "hurt" animation for the enemy
 
 
 
