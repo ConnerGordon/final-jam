@@ -11,10 +11,13 @@ const JUMP_VELOCITY = -400.0
 var navigtimer := 10.0
 
 
+@export var damage : int = 20
+
 var var_health : float :
 	set(new_health):
 		var_health = new_health
 		if var_health <= 0:
+			
 			queue_free()
 
 @onready var wallscan: RayCast2D = $wallscan
@@ -37,7 +40,7 @@ var end:= Vector2.ZERO
 var gravsig = 9.8*2.5
 
 func _ready() -> void:
-	var_health = 100
+	var_health = 100000
 	navigation_agent_2d.link_reached.connect(func(dict:Dictionary):
 		jump(dict["link_entry_position"],dict["link_exit_position"])
 		)
@@ -327,3 +330,9 @@ func _on_navigation_agent_2d_waypoint_reached(details: Dictionary) -> void:
 func _on_holdingtimer_timeout() -> void:
 	#print("time") 
 	pathhold = false
+
+
+func player_hit(area: Area2D) -> void:
+	print("g")
+	if area.get_parent() is Player:
+		area.get_parent().takedamage(damage)

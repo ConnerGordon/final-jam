@@ -21,12 +21,12 @@ size = Vector2(80, 80)
 size = Vector2(459, 474)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6b5m7"]
-size = Vector2(81, 79)
+size = Vector2(83, 83)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0vvse"]
 radius = 1200.0
 
-[node name="enemybase" type="CharacterBody2D" unique_id=658416861 groups=["enemy"]]
+[node name="husk" type="CharacterBody2D" unique_id=658416861 groups=["enemy"]]
 top_level = true
 collision_layer = 2
 collision_mask = 4
@@ -70,10 +70,8 @@ shape = SubResource("RectangleShape2D_nwalt")
 [node name="hurtbox" type="Area2D" parent="." unique_id=543940087]
 collision_layer = 2
 collision_mask = 7
-monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1088432644]
-position = Vector2(-0.5, 0.5)
 shape = SubResource("RectangleShape2D_6b5m7")
 
 [node name="wallscan" type="RayCast2D" parent="." unique_id=1496177478]
@@ -106,4 +104,5 @@ shape = SubResource("CircleShape2D_0vvse")
 [connection signal="target_reached" from="NavigationAgent2D" to="." method="destination_reach"]
 [connection signal="waypoint_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_waypoint_reached"]
 [connection signal="area_entered" from="detecbox" to="." method="detected"]
+[connection signal="area_entered" from="hurtbox" to="." method="player_hit"]
 [connection signal="timeout" from="holdingtimer" to="." method="_on_holdingtimer_timeout"]

@@ -11,17 +11,26 @@ class_name Player
 @onready var upwardhitbox: Area2D = $upwardhitbox
 
 @onready var swinglo: AnimatedSprite2D = $groundedswordbox/swinglo
+@onready var damagecooldown: Timer = $damagecooldown
 
 
-var var_health : float :
+@onready var ui: CanvasLayer = $UI
+
+
+
+var var_health : int :
 	set(new_health):
 		var_health = new_health
+		ui.healthval(new_health)
+		print(new_health)
 		if var_health <= 0:
+			print("dead"+ str(new_health))
 			queue_free()
 
 
 
-
+func _ready() -> void:
+	var_health = 100
 
 
 var SPEED = 400.0
@@ -344,3 +353,13 @@ func _downairentered(area: Area2D) -> void:
 	if area.get_parent().is_in_group("enemy"):
 		area.get_parent().var_health -=20
 		velocity.y =-1200
+
+
+
+
+func takedamage(damage:int):
+	if damagecooldown.is_stopped():
+		damagecooldown.start()
+		var_health =var_health - damage
+		var tween = create_tween()
+		tween.tween_property()
