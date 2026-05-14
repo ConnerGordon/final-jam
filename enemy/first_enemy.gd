@@ -40,7 +40,7 @@ var end:= Vector2.ZERO
 var gravsig = 9.8*2.5
 
 func _ready() -> void:
-	var_health = 100000
+	var_health = 10
 	navigation_agent_2d.link_reached.connect(func(dict:Dictionary):
 		jump(dict["link_entry_position"],dict["link_exit_position"])
 		)
@@ -335,4 +335,5 @@ func _on_holdingtimer_timeout() -> void:
 func player_hit(area: Area2D) -> void:
 	print("g")
 	if area.get_parent() is Player:
-		area.get_parent().takedamage(damage)
+		var g = global_position.x-area.get_parent().global_position.x
+		area.get_parent().takedamage(damage, sign(g))

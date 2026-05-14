@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://b5we7k1dmro72"]
+
+[sub_resource type="Theme" id="Theme_7pgf7"]
+default_font_size = 17
+
+[node name="Control" type="Control" unique_id=1345395980]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2055463302]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -574.0
+offset_top = -150.0
+offset_right = 574.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer" unique_id=1505254786]
+layout_mode = 2
+theme_override_constants/h_separation = 81
+columns = 3
+
+[node name="Panel" type="Panel" parent="CenterContainer/GridContainer" unique_id=633070310]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme = SubResource("Theme_7pgf7")
+
+[node name="Panel2" type="Panel" parent="CenterContainer/GridContainer" unique_id=1472198888]
+custom_minimum_size = Vector2(250, 300)
+layout_mode = 2
+
+[node name="Panel3" type="Panel" parent="CenterContainer/GridContainer" unique_id=1571519410]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2

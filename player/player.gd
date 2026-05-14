@@ -357,9 +357,10 @@ func _downairentered(area: Area2D) -> void:
 
 
 
-func takedamage(damage:int):
+func takedamage(damage:int, exp:int):
 	if damagecooldown.is_stopped():
 		damagecooldown.start()
 		var_health =var_health - damage
 		var tween = create_tween()
-		tween.tween_property()
+		tween.tween_property(self, "global_position",global_position + Vector2(-75*exp,-50),0.2)
+		

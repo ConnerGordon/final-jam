@@ -35,12 +35,15 @@ func _process(delta: float) -> void:
 func spawnroom()->void:
 	var preloadscene = roomarray[randf_range(0,3)]
 	var loaded = preloadscene.instantiate()
+	
 	mapholder.add_child(loaded)
+	
 	loaded.global_position = nextmappoint.global_position
 	
 	spawnscript.callspawn(loaded)
-	await get_tree().create_timer(1).timeout
-	nextmappoint.global_position = loaded.get_child(1).global_position
+	
+	nextmappoint.global_position = loaded.get_child(0).global_position
+	
 	#print(nextmappoint.global_position)
 	#print(character_body_2d.global_position)
 	
