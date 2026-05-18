@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bae8qqopb23p4"]
+
+[ext_resource type="Script" uid="uid://bci3gfrbdhpt0" path="res://death.gd" id="1_0e48y"]
+[ext_resource type="Texture2D" uid="uid://dpropmabtb244" path="res://icon.svg" id="2_epypp"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0hol4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_epypp")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6r6c"]
+size = Vector2(127, 127)
+
+[node name="Node2D" type="CharacterBody2D" unique_id=2110393946]
+collision_layer = 16
+collision_mask = 4
+script = ExtResource("1_0e48y")
+
+[node name="spriframe" type="AnimatedSprite2D" parent="." unique_id=1310852206]
+sprite_frames = SubResource("SpriteFrames_0hol4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1513621981]
+position = Vector2(-1.5, -2.5)
+shape = SubResource("RectangleShape2D_q6r6c")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1903503876]
+navigation_layers = 8

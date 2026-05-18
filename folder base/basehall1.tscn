@@ -292,3 +292,4 @@ position = Vector2(608, 0.1)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=2091718133]
 navigation_polygon = SubResource("NavigationPolygon_0f0fp")
+navigation_layers = 8
